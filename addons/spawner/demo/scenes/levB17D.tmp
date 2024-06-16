@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://bhhqf0fi18fh6"]
+
+[ext_resource type="Script" path="res://addons/spawner/spawner.gd" id="1_0ldj5"]
+[ext_resource type="PackedScene" uid="uid://w73b533yvcut" path="res://addons/spawner/demo/scenes/enemy.tscn" id="2_wm61l"]
+
+[node name="level" type="Node2D"]
+
+[node name="Spawner" type="Node" parent="."]
+script = ExtResource("1_0ldj5")
+enemy_scene = ExtResource("2_wm61l")
+spawners_position = Array[Vector2]([Vector2(200, 200), Vector2(400, 400)])
+enemy_amount_per_spawner = 2
+wait_time_till_next_spawn = 2
+
+[node name="Camera2D" type="Camera2D" parent="."]
+anchor_mode = 0
