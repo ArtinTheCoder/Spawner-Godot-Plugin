@@ -11,8 +11,6 @@ var spawn = true
 
 var change_marker_pos = false
 
-
-
 var spawners_node = []
 
 var spawn_status = {}

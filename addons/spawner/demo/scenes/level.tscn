@@ -11,8 +11,6 @@ anchor_mode = 0
 
 [node name="SpawnerContainer" type="Node" parent="."]
 script = ExtResource("1_pg0ur")
-spawn_enemies_at_the_same_spawners = true
-enemy_amount_per_spawner = 2
 
 [node name="Spawner" type="Marker2D" parent="SpawnerContainer"]
 position = Vector2(200, 350)
