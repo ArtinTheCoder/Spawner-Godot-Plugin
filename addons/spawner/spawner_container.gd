@@ -1,13 +1,6 @@
 extends Node
 
-@export var spawn_enemies_at_the_same_spawners : bool
-
-
-@export var spawner_cooldown : int
-
-var amount_spawned = 0
-
-var spawn_status = {}
+var total_amount_spawned = 0
 
 var spawners = []
 
@@ -34,48 +27,27 @@ func amount_spawned_limit():
 		return limit
 		
 func _physics_process(delta):
-	if amount_spawned < amount_spawned_limit():
-		for i in range(spawners.size()):
-			spawn_enemy(spawners[i], spawners[i].global_position.x, spawners[i].global_position.y)
+	for i in range(spawners.size()):
+		var spawner_name = spawners[i].name
 			
-#func spawn_enemy(spawner, x_pos, y_pos):
-	#if amount_spawned >= (enemy_amount_per_spawner * amount_of_spawners()):
-#
-		#if spawn_enemies_at_the_same_spawners:
-			#var spawn_status = true
-#
-			#var enemy_instantiate = spawner.enemy_scene.instantiate()
-			#spawner.add_child(enemy_instantiate)
-			#spawn_status = false
-			#amount_spawned += 1
-			#print(amount_spawned)
-		#
-		#else:
-			#for i in spawners.size():
-				#print(i)
-				#var spawner_test = spawners[i]
-				#var enemy_instantiate = spawner.enemy_scene.instantiate()
-				#spawner_test.add_child(enemy_instantiate)
-				#amount_spawned += 1
-				#print("Spawned enemy #", amount_spawned, " at spawner #", i + 1)
-				#if amount_spawned >= enemy_amount_per_spawner:
-					#break
-				#await get_tree().create_timer(3.0).timeout
-
+		if not SpawnerGlobal.spawner_status.has(spawner_name):
+			SpawnerGlobal.spawner_status[spawner_name] = false
+			SpawnerGlobal.spawner_count[spawner_name] = 0
+		
+		
+		# \ allows it to go to the next line on the if statement
+		if spawner_name == spawners[i].name \
+			and not SpawnerGlobal.spawner_status[spawner_name] \
+			and SpawnerGlobal.spawner_count[spawner_name] < spawners[i].enemy_amount_per_spawner:
+			
+				spawn_enemy(spawners[i], spawners[i].global_position.x, spawners[i].global_position.y)
+				SpawnerGlobal.spawner_status[spawner_name] = true
+				SpawnerGlobal.spawner_count[spawner_name] += 1
+				
 func spawn_enemy(spawner, x_pos, y_pos):
 	var enemy_instantiate = spawner.enemy_scene.instantiate()
 	
 	spawner.add_child(enemy_instantiate)
-	amount_spawned += 1
 	
-	#print("Spawned enemy #", amount_spawned, " at spawner #", spawners.find(spawner) + 1)
+	total_amount_spawned += 1
 	
-	# The - -1 for some reason fixs a bug that when you run it. 
-	# It will still spawn an extra one at the end
-		
-	if amount_spawned >= (spawner.enemy_amount_per_spawner * amount_of_spawners() - -1):
-		amount_spawned = 0
-		
-	else:
-		print(spawner.time_between_spawns)
-		

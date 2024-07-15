@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://bhhqf0fi18fh6"]
+[gd_scene load_steps=5 format=3 uid="uid://bhhqf0fi18fh6"]
 
 [ext_resource type="Script" path="res://addons/spawner/spawner_container.gd" id="1_pg0ur"]
 [ext_resource type="Script" path="res://addons/spawner/spawner.gd" id="2_gt2d5"]
 [ext_resource type="PackedScene" uid="uid://w73b533yvcut" path="res://addons/spawner/demo/scenes/enemy.tscn" id="3_p3x5u"]
+[ext_resource type="PackedScene" uid="uid://dp8o1bcji8ctp" path="res://addons/spawner/demo/scenes/second_enemy.tscn" id="4_lselc"]
 
 [node name="level" type="Node2D"]
 
@@ -11,18 +12,20 @@ anchor_mode = 0
 
 [node name="SpawnerContainer" type="Node" parent="."]
 script = ExtResource("1_pg0ur")
-spawner_cooldown = 4
 
 [node name="Spawner" type="Marker2D" parent="SpawnerContainer"]
 position = Vector2(200, 350)
 script = ExtResource("2_gt2d5")
 enemy_scene = ExtResource("3_p3x5u")
-enemy_amount_per_spawner = 3
-time_between_spawns = 3
+time_between_spawns = 2
 
 [node name="Spawner2" type="Marker2D" parent="SpawnerContainer"]
-position = Vector2(800, 350)
+position = Vector2(622, 235)
 script = ExtResource("2_gt2d5")
-enemy_scene = ExtResource("3_p3x5u")
-enemy_amount_per_spawner = 3
-time_between_spawns = 2
+enemy_scene = ExtResource("4_lselc")
+time_between_spawns = 4
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="child_entered_tree" from="SpawnerContainer/Spawner" to="SpawnerContainer/Spawner" method="_on_child_entered_tree"]
+[connection signal="child_entered_tree" from="SpawnerContainer/Spawner2" to="SpawnerContainer/Spawner2" method="_on_child_entered_tree"]

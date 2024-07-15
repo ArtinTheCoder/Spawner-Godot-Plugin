@@ -1,35 +1,19 @@
 extends Marker2D
 
+
 @export_category("Enemy")
+
+@export_enum("Single Enemy", "Multiple Enemy") var enemy_type : int
 
 @export var enemy_scene : PackedScene
 
-@export var enemy_amount_per_spawner = 1 # Enemy Amount To Spawn Per Spawner
+@export var enemy_amount_per_spawner = 3 
 
 @export_category("Spawners")
 
 @export var time_between_spawns : int
 
-var spawn = true
-
-var change_marker_pos = false
-
-var spawners_node = []
-
-var spawn_status = {}
-
-var amount_of_spawned = 0
-
-func wait_till_next_spawn(timer_node):
-	var timer = Timer.new()
-	add_child(timer)
-	timer_node = timer
-	timer.wait_time = time_between_spawns
-	timer.one_shot = true
-	timer_node = timer
-	timer.timeout.connect(spawn_time_timeout.bind(timer_node))
-	timer.start()
-
-func spawn_time_timeout(timer_node):
-	timer_node.queue_free()
+func _on_child_entered_tree(node):
+	await get_tree().create_timer(time_between_spawns).timeout
 	
+	SpawnerGlobal.spawner_status[self.name] = false
