@@ -11,13 +11,18 @@ anchor_mode = 0
 
 [node name="SpawnerContainer" type="Node" parent="."]
 script = ExtResource("1_pg0ur")
+spawner_cooldown = 4
 
 [node name="Spawner" type="Marker2D" parent="SpawnerContainer"]
 position = Vector2(200, 350)
 script = ExtResource("2_gt2d5")
 enemy_scene = ExtResource("3_p3x5u")
+enemy_amount_per_spawner = 3
+time_between_spawns = 3
 
 [node name="Spawner2" type="Marker2D" parent="SpawnerContainer"]
 position = Vector2(800, 350)
 script = ExtResource("2_gt2d5")
 enemy_scene = ExtResource("3_p3x5u")
+enemy_amount_per_spawner = 3
+time_between_spawns = 2

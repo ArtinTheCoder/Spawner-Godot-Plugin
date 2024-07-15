@@ -4,8 +4,11 @@ extends Marker2D
 
 @export var enemy_scene : PackedScene
 
+@export var enemy_amount_per_spawner = 1 # Enemy Amount To Spawn Per Spawner
+
 @export_category("Spawners")
 
+@export var time_between_spawns : int
 
 var spawn = true
 
@@ -17,17 +20,16 @@ var spawn_status = {}
 
 var amount_of_spawned = 0
 
-func wait_till_next_spawn(marker_node, timer_node):
+func wait_till_next_spawn(timer_node):
 	var timer = Timer.new()
 	add_child(timer)
 	timer_node = timer
-	#timer.wait_time = wait_time_till_next_spawn
+	timer.wait_time = time_between_spawns
 	timer.one_shot = true
 	timer_node = timer
-	timer.timeout.connect(spawn_time_timeout.bind(marker_node, timer_node))
+	timer.timeout.connect(spawn_time_timeout.bind(timer_node))
 	timer.start()
 
-func spawn_time_timeout(marker_node, timer_node):
-	spawn_status[marker_node] = true
+func spawn_time_timeout(timer_node):
 	timer_node.queue_free()
 	
