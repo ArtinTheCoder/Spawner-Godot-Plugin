@@ -1,9 +1,6 @@
 extends Marker2D
 
-
 @export_category("Enemy")
-
-@export_enum("Single Enemy", "Multiple Enemy") var enemy_type : int
 
 @export var enemy_scene : PackedScene
 
