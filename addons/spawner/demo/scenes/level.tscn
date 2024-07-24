@@ -1,22 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://bhhqf0fi18fh6"]
+[gd_scene load_steps=5 format=3 uid="uid://bhhqf0fi18fh6"]
 
 [ext_resource type="Script" path="res://addons/spawner/spawner_container.gd" id="1_pg0ur"]
+[ext_resource type="Script" path="res://addons/spawner/spawner.gd" id="2_o0kvl"]
 [ext_resource type="PackedScene" uid="uid://w73b533yvcut" path="res://addons/spawner/demo/scenes/enemy.tscn" id="3_p3x5u"]
-[ext_resource type="PackedScene" uid="uid://dp8o1bcji8ctp" path="res://addons/spawner/demo/scenes/second_enemy.tscn" id="4_lselc"]
-[ext_resource type="Script" path="res://addons/spawner/multiple_spawner.gd" id="5_grpis"]
-[ext_resource type="Script" path="res://addons/spawner/demo/scenes/enemy_spawn_res.gd" id="6_3jr57"]
-
-[sub_resource type="Resource" id="Resource_mra5s"]
-script = ExtResource("6_3jr57")
-scene = ExtResource("4_lselc")
-chance = 51
-amount = 4
-
-[sub_resource type="Resource" id="Resource_0p48n"]
-script = ExtResource("6_3jr57")
-scene = ExtResource("3_p3x5u")
-chance = 49
-amount = 4
+[ext_resource type="PackedScene" uid="uid://dp8o1bcji8ctp" path="res://addons/spawner/demo/scenes/second_enemy.tscn" id="4_sopj4"]
 
 [node name="level" type="Node2D"]
 
@@ -26,12 +13,15 @@ anchor_mode = 0
 [node name="SpawnerContainer" type="Node" parent="."]
 script = ExtResource("1_pg0ur")
 
-[node name="MultipleSpawner" type="Marker2D" parent="SpawnerContainer"]
-position = Vector2(521, 148)
-script = ExtResource("5_grpis")
-enemy_scene_array = Array[ExtResource("6_3jr57")]([SubResource("Resource_mra5s"), SubResource("Resource_0p48n")])
+[node name="Spawner" type="Marker2D" parent="SpawnerContainer"]
+position = Vector2(325, 228)
+script = ExtResource("2_o0kvl")
+enemy_scene = ExtResource("3_p3x5u")
+enemy_amount_per_spawner = 5
 time_between_spawns = 2
 
-[node name="Timer" type="Timer" parent="."]
-
-[connection signal="child_entered_tree" from="SpawnerContainer/MultipleSpawner" to="SpawnerContainer/MultipleSpawner" method="_on_child_entered_tree"]
+[node name="Spawner2" type="Marker2D" parent="SpawnerContainer"]
+position = Vector2(747, 228)
+script = ExtResource("2_o0kvl")
+enemy_scene = ExtResource("4_sopj4")
+time_between_spawns = 4
