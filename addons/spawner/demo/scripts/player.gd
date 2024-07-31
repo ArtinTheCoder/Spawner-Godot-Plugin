@@ -2,8 +2,6 @@ extends CharacterBody2D
 
 var speed = 150
 
-
-
 func _ready():
 	$Player.rotation = 0
 	
