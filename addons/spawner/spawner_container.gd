@@ -1,43 +1,58 @@
 extends Node
+class_name SpawnerContainer
 
 var spawners = []
 
 var total_enemies = 0
 
 var current_enemies = 0
+
+var start_spawning : bool
+
+@export var start_waves_onready : bool = true
+
+signal start_wave(should_start)
+
+signal wave_finished
+
 func _ready():
 	get_spawners()
+	start_wave.connect(_on_start_wave)
+
+func _on_start_wave(should_start):
+	start_spawning = should_start
+	print(start_spawning)
 	
 func get_spawners():
 	for spawner in get_children(true):
-		#print("Spawner X = " + str(spawner.global_position.x), " Spawner Y = " + str(spawner.global_position.y))
 		spawners.append(spawner)
-		total_enemies += spawner.culminating_spawner_amount
-		
-func _physics_process(delta):
-	for i in range(spawners.size()):
-		var spawner_name = spawners[i].name
-
-		if not SpawnerGlobal.spawner_status.has(spawner_name):
-			SpawnerGlobal.spawner_status[spawner_name] = false
-			SpawnerGlobal.spawner_count[spawner_name] = 0
-		
-		# \ allows it to go to the next line on the if statement
-		# Check if the spawner can spawn more enemies based on max_amount	
-		if spawners[i].spawner_type != "multiple_spawner":
-			if not SpawnerGlobal.spawner_status[spawner_name] \
-			and SpawnerGlobal.spawner_count[spawner_name] < spawners[i].enemy_amount_per_spawner:
-				print(spawner_name, " ", SpawnerGlobal.spawner_count[spawner_name])
-				spawn_enemy(spawners[i], spawners[i].global_position.x, spawners[i].global_position.y)
-				SpawnerGlobal.spawner_status[spawner_name] = true
-
+		if spawner.spawner_type == "multiple_spawner":
+			total_enemies += spawner.culminating_spawner_amount
 		else:
-			if not SpawnerGlobal.spawner_status[spawner_name]:
-				SpawnerGlobal.spawner_status[spawner_name] = true
-				spawn_enemy(spawners[i], spawners[i].global_position.x, spawners[i].global_position.y)
-		#if (current_enemies - 1) == total_enemies:
-			#print("All Spawners Finished")
-			
+			total_enemies += spawner.enemy_amount_per_spawner
+func _physics_process(delta):
+	if start_waves_onready == true or start_spawning:
+		for i in range(spawners.size()):
+			var spawner_name = spawners[i].name
+
+			if not SpawnerGlobal.spawner_status.has(spawner_name):
+				SpawnerGlobal.spawner_status[spawner_name] = false
+				SpawnerGlobal.spawner_count[spawner_name] = 0
+				
+				# \ allows it to go to the next line on the if statement
+				# Check if the spawner can spawn more enemies based on max_amount	
+			if spawners[i].spawner_type != "multiple_spawner":
+				if not SpawnerGlobal.spawner_status[spawner_name] \
+				and SpawnerGlobal.spawner_count[spawner_name] < spawners[i].enemy_amount_per_spawner:
+					print(spawner_name, " ", SpawnerGlobal.spawner_count[spawner_name])
+					spawn_enemy(spawners[i], spawners[i].global_position.x, spawners[i].global_position.y)
+					SpawnerGlobal.spawner_status[spawner_name] = true
+
+			else:
+				if not SpawnerGlobal.spawner_status[spawner_name]:
+					SpawnerGlobal.spawner_status[spawner_name] = true
+					spawn_enemy(spawners[i], spawners[i].global_position.x, spawners[i].global_position.y)
+
 func spawn_enemy(spawner, x_pos, y_pos):
 	if spawner.spawner_type == "multiple_spawner":
 		var enemy_data = spawner.choose_enemy()
@@ -48,12 +63,13 @@ func spawn_enemy(spawner, x_pos, y_pos):
 			SpawnerGlobal.spawner_count[spawner.name] += 1
 		
 		else:
-			print(spawner.name, ": No enemy spawned: Max amount reached or no enemy selected")
+		#	print(spawner.name, ": No enemy spawned: Max amount reached or no enemy selected")
+			wave_finished.emit()
+			
 	else:
-		print("SPAWNED")
 		var enemy_instantiate = spawner.enemy_scene.instantiate()
 		spawner.add_child(enemy_instantiate)
 		SpawnerGlobal.spawner_count[spawner.name] += 1
 	
 	current_enemies += 1
-	
+

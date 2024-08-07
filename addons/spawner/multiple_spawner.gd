@@ -2,7 +2,7 @@ extends Marker2D
 
 @export_category("Enemy")
 
-@export var enemy_scene_array : Array[Enemy]
+@export var enemy_scene_array : Array[EnemyResource]
 
 @export_category("Spawners")
 
@@ -51,7 +51,6 @@ func choose_enemy():
 	return null
 	
 func _on_child_entered_tree(node):
-
 	await get_tree().create_timer(time_between_spawns).timeout
 	
 	SpawnerGlobal.spawner_status[self.name] = false

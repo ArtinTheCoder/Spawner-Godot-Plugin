@@ -1,4 +1,4 @@
-class_name Enemy 
+class_name EnemyResource 
 extends Resource
 
 @export var scene: PackedScene

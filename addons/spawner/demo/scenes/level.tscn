@@ -1,28 +1,18 @@
 [gd_scene load_steps=10 format=3 uid="uid://bhhqf0fi18fh6"]
 
 [ext_resource type="Script" path="res://addons/spawner/spawner_container.gd" id="1_pg0ur"]
+[ext_resource type="Script" path="res://addons/spawner/demo/scripts/level.gd" id="1_q614t"]
 [ext_resource type="PackedScene" uid="uid://w73b533yvcut" path="res://addons/spawner/demo/scenes/enemy.tscn" id="3_p3x5u"]
 [ext_resource type="Script" path="res://addons/spawner/enemy_spawn_res.gd" id="4_4srnp"]
 [ext_resource type="PackedScene" uid="uid://dp8o1bcji8ctp" path="res://addons/spawner/demo/scenes/second_enemy.tscn" id="4_sopj4"]
 [ext_resource type="Script" path="res://addons/spawner/multiple_spawner.gd" id="5_ofq2w"]
-
-[sub_resource type="Resource" id="Resource_y7ebr"]
-script = ExtResource("4_4srnp")
-scene = ExtResource("3_p3x5u")
-chance = 80
-max_amount = 6
-
-[sub_resource type="Resource" id="Resource_10ryw"]
-script = ExtResource("4_4srnp")
-scene = ExtResource("4_sopj4")
-chance = 20
-max_amount = 2
+[ext_resource type="Script" path="res://addons/spawner/spawner.gd" id="7_n8ma8"]
 
 [sub_resource type="Resource" id="Resource_w6gpr"]
 script = ExtResource("4_4srnp")
 scene = ExtResource("3_p3x5u")
 chance = 60
-max_amount = 3
+max_amount = 4
 
 [sub_resource type="Resource" id="Resource_sxdtk"]
 script = ExtResource("4_4srnp")
@@ -31,21 +21,41 @@ chance = 40
 max_amount = 2
 
 [node name="level" type="Node2D"]
+script = ExtResource("1_q614t")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 anchor_mode = 0
 
 [node name="SpawnerContainer" type="Node" parent="."]
 script = ExtResource("1_pg0ur")
-
-[node name="MultipleSpawner" type="Marker2D" parent="SpawnerContainer"]
-position = Vector2(271, 187)
-script = ExtResource("5_ofq2w")
-enemy_scene_array = Array[ExtResource("4_4srnp")]([SubResource("Resource_y7ebr"), SubResource("Resource_10ryw")])
-time_between_spawns = 2
+start_waves_onready = false
 
 [node name="MultipleSpawner2" type="Marker2D" parent="SpawnerContainer"]
-position = Vector2(826, 190)
+position = Vector2(542, 169)
 script = ExtResource("5_ofq2w")
 enemy_scene_array = Array[ExtResource("4_4srnp")]([SubResource("Resource_w6gpr"), SubResource("Resource_sxdtk")])
 time_between_spawns = 2
+
+[node name="Spawner" type="Marker2D" parent="SpawnerContainer"]
+position = Vector2(318, 156)
+script = ExtResource("7_n8ma8")
+enemy_scene = ExtResource("3_p3x5u")
+time_between_spawns = 1
+
+[node name="Start" type="Button" parent="."]
+offset_left = 137.0
+offset_top = 431.0
+offset_right = 242.0
+offset_bottom = 462.0
+text = "START WAVE"
+
+[node name="Stop" type="Button" parent="."]
+offset_left = 139.0
+offset_top = 485.0
+offset_right = 244.0
+offset_bottom = 516.0
+text = "Stop  WAVE"
+
+[connection signal="wave_finished" from="SpawnerContainer" to="." method="_on_spawner_container_wave_finished"]
+[connection signal="pressed" from="Start" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Stop" to="." method="_on_stop_pressed"]
