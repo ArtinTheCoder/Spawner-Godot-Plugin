@@ -6,19 +6,21 @@
 [ext_resource type="Script" path="res://addons/spawner/enemy_spawn_res.gd" id="4_4srnp"]
 [ext_resource type="PackedScene" uid="uid://dp8o1bcji8ctp" path="res://addons/spawner/demo/scenes/second_enemy.tscn" id="4_sopj4"]
 [ext_resource type="Script" path="res://addons/spawner/multiple_spawner.gd" id="5_ofq2w"]
-[ext_resource type="Script" path="res://addons/spawner/spawner.gd" id="7_n8ma8"]
 
 [sub_resource type="Resource" id="Resource_w6gpr"]
 script = ExtResource("4_4srnp")
 scene = ExtResource("3_p3x5u")
 chance = 60
-max_amount = 4
+max_amount = 20
 
 [sub_resource type="Resource" id="Resource_sxdtk"]
 script = ExtResource("4_4srnp")
 scene = ExtResource("4_sopj4")
 chance = 40
-max_amount = 2
+max_amount = 20
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ivcen"]
+size = Vector2(554, 224)
 
 [node name="level" type="Node2D"]
 script = ExtResource("1_q614t")
@@ -28,19 +30,15 @@ anchor_mode = 0
 
 [node name="SpawnerContainer" type="Node" parent="."]
 script = ExtResource("1_pg0ur")
-start_waves_onready = false
 
-[node name="MultipleSpawner2" type="Marker2D" parent="SpawnerContainer"]
-position = Vector2(542, 169)
+[node name="MultipleSpawner2" type="Marker2D" parent="SpawnerContainer" node_paths=PackedStringArray("area_2d")]
+position = Vector2(541, 174)
 script = ExtResource("5_ofq2w")
 enemy_scene_array = Array[ExtResource("4_4srnp")]([SubResource("Resource_w6gpr"), SubResource("Resource_sxdtk")])
 time_between_spawns = 2
-
-[node name="Spawner" type="Marker2D" parent="SpawnerContainer"]
-position = Vector2(318, 156)
-script = ExtResource("7_n8ma8")
-enemy_scene = ExtResource("3_p3x5u")
-time_between_spawns = 1
+use_custom_areas = true
+area_2d = NodePath("../../SpawnArea")
+enemy_size = Vector2(0, 0)
 
 [node name="Start" type="Button" parent="."]
 offset_left = 137.0
@@ -50,12 +48,18 @@ offset_bottom = 462.0
 text = "START WAVE"
 
 [node name="Stop" type="Button" parent="."]
-offset_left = 139.0
+offset_left = 137.0
 offset_top = 485.0
-offset_right = 244.0
+offset_right = 242.0
 offset_bottom = 516.0
 text = "Stop  WAVE"
 
+[node name="SpawnArea" type="CollisionShape2D" parent="."]
+position = Vector2(800, 492)
+shape = SubResource("RectangleShape2D_ivcen")
+
+[connection signal="specific_enemy_wave_spawned_multi_spawner" from="SpawnerContainer" to="." method="_on_spawner_container_specific_enemy_wave_spawned_multi_spawner"]
 [connection signal="wave_finished" from="SpawnerContainer" to="." method="_on_spawner_container_wave_finished"]
+[connection signal="finished_spawning" from="SpawnerContainer/MultipleSpawner2" to="." method="_on_multiple_spawner_2_finished_spawning"]
 [connection signal="pressed" from="Start" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="Stop" to="." method="_on_stop_pressed"]

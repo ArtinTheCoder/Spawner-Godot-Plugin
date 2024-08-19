@@ -1,6 +1,12 @@
 extends Node
 class_name SpawnerContainer
 
+signal start_wave(should_start)
+
+signal wave_finished
+
+signal specific_enemy_wave_spawned_multi_spawner(enemy)
+
 var spawners = []
 
 var total_enemies = 0
@@ -10,10 +16,6 @@ var current_enemies = 0
 var start_spawning : bool
 
 @export var start_waves_onready : bool = true
-
-signal start_wave(should_start)
-
-signal wave_finished
 
 func _ready():
 	get_spawners()
@@ -30,6 +32,7 @@ func get_spawners():
 			total_enemies += spawner.culminating_spawner_amount
 		else:
 			total_enemies += spawner.enemy_amount_per_spawner
+	
 func _physics_process(delta):
 	if start_waves_onready == true or start_spawning:
 		for i in range(spawners.size()):
@@ -38,32 +41,43 @@ func _physics_process(delta):
 			if not SpawnerGlobal.spawner_status.has(spawner_name):
 				SpawnerGlobal.spawner_status[spawner_name] = false
 				SpawnerGlobal.spawner_count[spawner_name] = 0
-				
+					
 				# \ allows it to go to the next line on the if statement
 				# Check if the spawner can spawn more enemies based on max_amount	
 			if spawners[i].spawner_type != "multiple_spawner":
 				if not SpawnerGlobal.spawner_status[spawner_name] \
 				and SpawnerGlobal.spawner_count[spawner_name] < spawners[i].enemy_amount_per_spawner:
-					print(spawner_name, " ", SpawnerGlobal.spawner_count[spawner_name])
+					#print(spawner_name, " ", SpawnerGlobal.spawner_count[spawner_name])
 					spawn_enemy(spawners[i], spawners[i].global_position.x, spawners[i].global_position.y)
 					SpawnerGlobal.spawner_status[spawner_name] = true
 
 			else:
 				if not SpawnerGlobal.spawner_status[spawner_name]:
-					SpawnerGlobal.spawner_status[spawner_name] = true
-					spawn_enemy(spawners[i], spawners[i].global_position.x, spawners[i].global_position.y)
+					if spawners[i].use_custom_areas:
+						SpawnerGlobal.spawner_status[spawner_name] = true
+						spawn_enemy(spawners[i], spawners[i].custom_area_x_pos, spawners[i].custom_area_y_pos)
 
+					else:
+						SpawnerGlobal.spawner_status[spawner_name] = true
+						spawn_enemy(spawners[i], spawners[i].global_position.x, spawners[i].global_position.y)
+
+						
 func spawn_enemy(spawner, x_pos, y_pos):
 	if spawner.spawner_type == "multiple_spawner":
 		var enemy_data = spawner.choose_enemy()
 	
 		if enemy_data and SpawnerGlobal.spawner_count[spawner.name] < spawner.culminating_spawner_amount:
 			var enemy_instantiate = enemy_data.scene.instantiate()
+		#	enemy_instantiate.global_position.x = (SpawnerGlobal.custom_area_x_pos - spawner.global_position.x)
+		#	enemy_instantiate.global_position.y = (SpawnerGlobal.custom_area_y_pos - spawner.global_position.y)
+			
 			spawner.add_child(enemy_instantiate)
 			SpawnerGlobal.spawner_count[spawner.name] += 1
-		
+			
+			if SpawnerGlobal.spawner_count[spawner.name] == enemy_data.max_amount:
+				specific_enemy_wave_spawned_multi_spawner.emit(enemy_data)
+				
 		else:
-		#	print(spawner.name, ": No enemy spawned: Max amount reached or no enemy selected")
 			wave_finished.emit()
 			
 	else:

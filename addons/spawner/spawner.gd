@@ -1,5 +1,7 @@
 extends Marker2D
 
+signal finished_spawning
+
 @export_category("Enemy")
 
 @export var enemy_scene : PackedScene
@@ -12,6 +14,8 @@ extends Marker2D
 
 var spawner_type = "single_spawner"
 
+var amount_spawned = 0 
+
 func _ready():
 	var spawner_node = self
 	spawner_node.child_entered_tree.connect(_on_child_entered_tree)
@@ -20,3 +24,9 @@ func _on_child_entered_tree(node):
 	await get_tree().create_timer(time_between_spawns).timeout
 	
 	SpawnerGlobal.spawner_status[self.name] = false
+	
+	amount_spawned += 1
+	
+	if enemy_amount_per_spawner == amount_spawned:
+		finished_spawning.emit()
+		
