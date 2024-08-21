@@ -11,7 +11,7 @@ signal finished_spawning
 
 @export_category("Spawners")
 
-@export var time_between_spawns : int
+@export var time_between_spawns : int = 1
 
 @export_category("Spawn Area")
 
@@ -43,7 +43,9 @@ func _ready():
 	for data in enemy_scene_array:
 		culminating_spawner_amount += data.max_amount
 		enemy_counts[data.scene.resource_path] = 0
-		
+		if data.chance > 100:
+			print("THE TOTAL AMOUNT OF CHANCE IS OVER 100!", "SPAWNER NAME:", self.name)
+	
 	var spawner_node = self
 	spawner_node.child_entered_tree.connect(_on_child_entered_tree)
 	
@@ -122,16 +124,19 @@ func _validate_property(property : Dictionary) -> void:
 
 func get_random_pos_2d(enemy: EnemyResource):
 	var shape = area_2d.get_shape()
-	if area_2d != null and shape is RectangleShape2D:
-		custom_area_x_pos = randi_range(area_2d.shape.get_rect().size.x + (enemy.enemy_size.x / 2), area_2d.shape.get_rect().size.x * 2) 
-		custom_area_x_pos -= enemy.enemy_size.x
-		print("AREA X: ", custom_area_x_pos )
-		prints(area_2d.shape.get_rect().size.x + (enemy.enemy_size.x / 2), area_2d.shape.get_rect().size.x * 2)
-		
-		if custom_area_x_pos < area_2d.shape.get_rect().size.x + (enemy.enemy_size.x / 2):
-			custom_area_x_pos = area_2d.shape.get_rect().size.x + (enemy.enemy_size.x / 2)
-		
-		custom_area_y_pos = randi_range(area_2d.global_position.y, area_2d.global_position.y - area_2d.shape.get_rect().size.y / 2) 
-		custom_area_y_pos -= enemy.enemy_size.y
+	if area_2d != null:
+		if shape is RectangleShape2D:
+			custom_area_x_pos = randi_range(area_2d.shape.get_rect().size.x + (enemy.enemy_size.x / 2), area_2d.shape.get_rect().size.x * 2) 
+			custom_area_x_pos -= enemy.enemy_size.x
+			print("AREA X: ", custom_area_x_pos )
+			prints(area_2d.shape.get_rect().size.x + (enemy.enemy_size.x / 2), area_2d.shape.get_rect().size.x * 2)
+			
+			if custom_area_x_pos < area_2d.shape.get_rect().size.x + (enemy.enemy_size.x / 2):
+				custom_area_x_pos = area_2d.shape.get_rect().size.x + (enemy.enemy_size.x / 2)
+			
+			custom_area_y_pos = randi_range(area_2d.global_position.y, area_2d.global_position.y - area_2d.shape.get_rect().size.y / 2) 
+			custom_area_y_pos -= enemy.enemy_size.y
+		else:
+			print("IT MUST BE A RECTANGLE COLLISION SHAPE 2D")
 	else:
-		print("BAD SHAPE")
+		print("THERE IS NO COLLISION SHAPE ATTACHED TO THIS SCRIPT")

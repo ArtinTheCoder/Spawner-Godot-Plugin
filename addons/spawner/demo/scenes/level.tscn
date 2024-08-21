@@ -1,25 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://bhhqf0fi18fh6"]
+[gd_scene load_steps=6 format=3 uid="uid://bhhqf0fi18fh6"]
 
 [ext_resource type="Script" path="res://addons/spawner/spawner_container.gd" id="1_pg0ur"]
 [ext_resource type="Script" path="res://addons/spawner/demo/scripts/level.gd" id="1_q614t"]
 [ext_resource type="PackedScene" uid="uid://w73b533yvcut" path="res://addons/spawner/demo/scenes/enemy.tscn" id="3_p3x5u"]
-[ext_resource type="Script" path="res://addons/spawner/enemy_spawn_res.gd" id="4_4srnp"]
-[ext_resource type="PackedScene" uid="uid://dp8o1bcji8ctp" path="res://addons/spawner/demo/scenes/second_enemy.tscn" id="4_sopj4"]
-[ext_resource type="Script" path="res://addons/spawner/multiple_spawner.gd" id="5_ofq2w"]
-
-[sub_resource type="Resource" id="Resource_w6gpr"]
-script = ExtResource("4_4srnp")
-scene = ExtResource("3_p3x5u")
-chance = 60
-max_amount = 20
-enemy_size = Vector2(128, 128)
-
-[sub_resource type="Resource" id="Resource_sxdtk"]
-script = ExtResource("4_4srnp")
-scene = ExtResource("4_sopj4")
-chance = 40
-max_amount = 20
-enemy_size = Vector2(128, 128)
+[ext_resource type="Script" path="res://addons/spawner/spawner.gd" id="7_lgf1b"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ivcen"]
 size = Vector2(554, 224)
@@ -33,13 +17,14 @@ anchor_mode = 0
 [node name="SpawnerContainer" type="Node" parent="."]
 script = ExtResource("1_pg0ur")
 
-[node name="MultipleSpawner2" type="Marker2D" parent="SpawnerContainer" node_paths=PackedStringArray("area_2d")]
-position = Vector2(541, 174)
-script = ExtResource("5_ofq2w")
-enemy_scene_array = Array[ExtResource("4_4srnp")]([SubResource("Resource_w6gpr"), SubResource("Resource_sxdtk")])
-time_between_spawns = 2
+[node name="Spawner" type="Marker2D" parent="SpawnerContainer" node_paths=PackedStringArray("area_2d")]
+position = Vector2(182, 180)
+script = ExtResource("7_lgf1b")
+enemy_scene = ExtResource("3_p3x5u")
+enemy_amount_per_spawner = 30
 use_custom_areas = true
 area_2d = NodePath("../../SpawnArea")
+enemy_size = Vector2(128, 128)
 
 [node name="Start" type="Button" parent="."]
 offset_left = 137.0
@@ -59,11 +44,7 @@ text = "Stop  WAVE"
 position = Vector2(831, 433)
 shape = SubResource("RectangleShape2D_ivcen")
 
-[node name="Node2D" type="Node2D" parent="."]
-position = Vector2(1106, 323)
-
 [connection signal="specific_enemy_wave_spawned_multi_spawner" from="SpawnerContainer" to="." method="_on_spawner_container_specific_enemy_wave_spawned_multi_spawner"]
 [connection signal="wave_finished" from="SpawnerContainer" to="." method="_on_spawner_container_wave_finished"]
-[connection signal="finished_spawning" from="SpawnerContainer/MultipleSpawner2" to="." method="_on_multiple_spawner_2_finished_spawning"]
 [connection signal="pressed" from="Start" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="Stop" to="." method="_on_stop_pressed"]
