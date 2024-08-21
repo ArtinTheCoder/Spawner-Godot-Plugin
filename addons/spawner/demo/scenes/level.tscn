@@ -12,12 +12,14 @@ script = ExtResource("4_4srnp")
 scene = ExtResource("3_p3x5u")
 chance = 60
 max_amount = 20
+enemy_size = Vector2(128, 128)
 
 [sub_resource type="Resource" id="Resource_sxdtk"]
 script = ExtResource("4_4srnp")
 scene = ExtResource("4_sopj4")
 chance = 40
 max_amount = 20
+enemy_size = Vector2(128, 128)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ivcen"]
 size = Vector2(554, 224)
@@ -38,7 +40,6 @@ enemy_scene_array = Array[ExtResource("4_4srnp")]([SubResource("Resource_w6gpr")
 time_between_spawns = 2
 use_custom_areas = true
 area_2d = NodePath("../../SpawnArea")
-enemy_size = Vector2(0, 0)
 
 [node name="Start" type="Button" parent="."]
 offset_left = 137.0
@@ -55,8 +56,11 @@ offset_bottom = 516.0
 text = "Stop  WAVE"
 
 [node name="SpawnArea" type="CollisionShape2D" parent="."]
-position = Vector2(800, 492)
+position = Vector2(831, 433)
 shape = SubResource("RectangleShape2D_ivcen")
+
+[node name="Node2D" type="Node2D" parent="."]
+position = Vector2(1106, 323)
 
 [connection signal="specific_enemy_wave_spawned_multi_spawner" from="SpawnerContainer" to="." method="_on_spawner_container_specific_enemy_wave_spawned_multi_spawner"]
 [connection signal="wave_finished" from="SpawnerContainer" to="." method="_on_spawner_container_wave_finished"]

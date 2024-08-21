@@ -123,12 +123,15 @@ func _validate_property(property : Dictionary) -> void:
 func get_random_pos_2d(enemy: EnemyResource):
 	var shape = area_2d.get_shape()
 	if area_2d != null and shape is RectangleShape2D:
-		print(shape)
-
-		custom_area_x_pos = randi_range(area_2d.global_position.x, area_2d.global_position.x + area_2d.shape.get_rect().size.x) 
-		print(custom_area_x_pos / 6)
-		custom_area_x_pos -= custom_area_x_pos / 6
+		custom_area_x_pos = randi_range(area_2d.shape.get_rect().size.x + (enemy.enemy_size.x / 2), area_2d.shape.get_rect().size.x * 2) 
+		custom_area_x_pos -= enemy.enemy_size.x
+		print("AREA X: ", custom_area_x_pos )
+		prints(area_2d.shape.get_rect().size.x + (enemy.enemy_size.x / 2), area_2d.shape.get_rect().size.x * 2)
+		
+		if custom_area_x_pos < area_2d.shape.get_rect().size.x + (enemy.enemy_size.x / 2):
+			custom_area_x_pos = area_2d.shape.get_rect().size.x + (enemy.enemy_size.x / 2)
+		
 		custom_area_y_pos = randi_range(area_2d.global_position.y, area_2d.global_position.y - area_2d.shape.get_rect().size.y / 2) 
-	
+		custom_area_y_pos -= enemy.enemy_size.y
 	else:
 		print("BAD SHAPE")
