@@ -48,19 +48,18 @@ func _physics_process(delta):
 				if not SpawnerGlobal.spawner_status[spawner_name] \
 				and SpawnerGlobal.spawner_count[spawner_name] < spawners[i].enemy_amount_per_spawner:
 					#print(spawner_name, " ", SpawnerGlobal.spawner_count[spawner_name])
-					spawn_enemy(spawners[i], spawners[i].custom_area_x_pos, spawners[i].custom_area_y_pos)
+					spawn_enemy(spawners[i], spawners[i].custom_area_pos.x, spawners[i].custom_area_pos.y)
 					SpawnerGlobal.spawner_status[spawner_name] = true
 
 			else:
 				if not SpawnerGlobal.spawner_status[spawner_name]:
 					if spawners[i].use_custom_areas:
 						SpawnerGlobal.spawner_status[spawner_name] = true
-						spawn_enemy(spawners[i], spawners[i].custom_area_x_pos, spawners[i].custom_area_y_pos)
+						spawn_enemy(spawners[i], spawners[i].custom_area_pos.x, spawners[i].custom_area_pos.y)
 
 					else:
 						SpawnerGlobal.spawner_status[spawner_name] = true
 						spawn_enemy(spawners[i], spawners[i].global_position.x, spawners[i].global_position.y)
-
 						
 func spawn_enemy(spawner, x_pos, y_pos):
 	if spawner.spawner_type == "multiple_spawner":
@@ -85,7 +84,4 @@ func spawn_enemy(spawner, x_pos, y_pos):
 		spawner.add_child(enemy_instantiate)
 		SpawnerGlobal.spawner_count[spawner.name] += 1
 	
-
-		
 	current_enemies += 1
-

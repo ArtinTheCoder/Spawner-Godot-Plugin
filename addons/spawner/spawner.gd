@@ -30,8 +30,7 @@ var spawner_type = "single_spawner"
 
 var amount_spawned = 0 
 
-var custom_area_x_pos = 0
-var custom_area_y_pos = 0
+var custom_area_pos = Vector2(0, 0)
 
 func _ready():
 	var spawner_node = self
@@ -39,11 +38,13 @@ func _ready():
 	
 	if enemy_scene == null:
 		print("NO ENEMY SCENE")
-
+	
+	get_random_pos_2d(enemy_scene)
+	
 func _on_child_entered_tree(node):
+	get_random_pos_2d(enemy_scene)
 	if use_custom_areas:
-		node.global_position.x = custom_area_x_pos
-		node.global_position.y = custom_area_y_pos 
+		node.global_position = custom_area_pos
 		
 	await get_tree().create_timer(time_between_spawns).timeout
 	
@@ -67,20 +68,19 @@ func _validate_property(property : Dictionary) -> void:
 		else:
 			property.usage &= ~PROPERTY_USAGE_GROUP
 
-func get_random_pos_2d(enemy: EnemyResource):
-	var shape = area_2d.get_shape()
+func get_random_pos_2d(enemy: PackedScene):
+
+	
 	if area_2d != null:
+		
+		var shape = area_2d.get_shape()
+		var top_left_corner = area_2d.global_position - (area_2d.shape.size / 2)
+	
 		if shape is RectangleShape2D:
-			custom_area_x_pos = randi_range(area_2d.shape.get_rect().size.x + (enemy.enemy_size.x / 2), area_2d.shape.get_rect().size.x * 2) 
-			custom_area_x_pos -= enemy.enemy_size.x
-			print("AREA X: ", custom_area_x_pos )
-			prints(area_2d.shape.get_rect().size.x + (enemy.enemy_size.x / 2), area_2d.shape.get_rect().size.x * 2)
+			custom_area_pos.x = randi_range(top_left_corner.x + (enemy_size.x / 2), top_left_corner.x + area_2d.shape.size.x - (enemy_size.x / 2)) 
 			
-			if custom_area_x_pos < area_2d.shape.get_rect().size.x + (enemy.enemy_size.x / 2):
-				custom_area_x_pos = area_2d.shape.get_rect().size.x + (enemy.enemy_size.x / 2)
-			
-			custom_area_y_pos = randi_range(area_2d.global_position.y, area_2d.global_position.y - area_2d.shape.get_rect().size.y / 2) 
-			custom_area_y_pos -= enemy.enemy_size.y
+			custom_area_pos.y = randi_range(top_left_corner.y + (enemy_size.y / 2), top_left_corner.y + area_2d.shape.size.y - (enemy_size.y / 2)) 
+		
 		else:
 			print("IT MUST BE A RECTANGLE COLLISION SHAPE 2D")
 	else:
