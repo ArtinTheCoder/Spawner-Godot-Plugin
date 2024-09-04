@@ -1,31 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://bhhqf0fi18fh6"]
+[gd_scene load_steps=5 format=3 uid="uid://bhhqf0fi18fh6"]
 
 [ext_resource type="Script" path="res://addons/spawner/spawner_container.gd" id="1_pg0ur"]
 [ext_resource type="Script" path="res://addons/spawner/demo/scripts/level.gd" id="1_q614t"]
-[ext_resource type="Script" path="res://addons/spawner/enemy_spawn_res.gd" id="4_ehn45"]
-[ext_resource type="PackedScene" uid="uid://w73b533yvcut" path="res://addons/spawner/demo/scenes/enemy.tscn" id="4_wbmnn"]
-[ext_resource type="Script" path="res://addons/spawner/multiple_spawner.gd" id="5_rvjxj"]
 [ext_resource type="PackedScene" uid="uid://dp8o1bcji8ctp" path="res://addons/spawner/demo/scenes/second_enemy.tscn" id="6_y3ebn"]
 [ext_resource type="Script" path="res://addons/spawner/spawner.gd" id="7_003rp"]
-
-[sub_resource type="Resource" id="Resource_4hfou"]
-script = ExtResource("4_ehn45")
-scene = ExtResource("4_wbmnn")
-chance = 50
-max_amount = 20
-enemy_size = Vector2(128, 128)
-enemy_pivot_point_in_center = true
-
-[sub_resource type="Resource" id="Resource_aabci"]
-script = ExtResource("4_ehn45")
-scene = ExtResource("6_y3ebn")
-chance = 50
-max_amount = 0
-enemy_size = Vector2(128, 128)
-enemy_pivot_point_in_center = true
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_6ms2c"]
-size = Vector2(493, 189)
 
 [node name="level" type="Node2D"]
 script = ExtResource("1_q614t")
@@ -35,14 +13,6 @@ anchor_mode = 0
 
 [node name="SpawnerContainer" type="Node" parent="."]
 script = ExtResource("1_pg0ur")
-
-[node name="MultipleSpawner" type="Marker2D" parent="SpawnerContainer" node_paths=PackedStringArray("area_2d")]
-position = Vector2(593, 142)
-script = ExtResource("5_rvjxj")
-enemy_scene_array = Array[ExtResource("4_ehn45")]([SubResource("Resource_4hfou"), SubResource("Resource_aabci")])
-time_between_spawns = 5
-use_custom_areas = true
-area_2d = NodePath("../../CollisionShape2D")
 
 [node name="Spawner" type="Marker2D" parent="SpawnerContainer" node_paths=PackedStringArray("area_2d")]
 script = ExtResource("7_003rp")
@@ -67,8 +37,7 @@ offset_bottom = 516.0
 text = "Stop  WAVE"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(671, 327)
-shape = SubResource("RectangleShape2D_6ms2c")
+position = Vector2(690.5, 262.5)
 
 [node name="Node2D" type="Node2D" parent="."]
 position = Vector2(424.5, 232.5)

@@ -7,5 +7,4 @@ extends Resource
 @export var max_amount : int ## How much it should spawn
 
 @export_group("Enemy Info") ## FOR CUSTOM AREA SPAWNING
-@export var enemy_size : Vector2 ## FOR CUSTOM AREA SPAWNING
-@export var enemy_pivot_point_in_center : bool = true ## FOR CUSTOM AREA SPAWNING
+@export var enemy_size : Vector2 ## Your Enemy Size X and Y

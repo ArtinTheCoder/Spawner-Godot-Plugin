@@ -67,9 +67,7 @@ func spawn_enemy(spawner, x_pos, y_pos):
 	
 		if enemy_data and SpawnerGlobal.spawner_count[spawner.name] < spawner.culminating_spawner_amount:
 			var enemy_instantiate = enemy_data.scene.instantiate()
-		#	enemy_instantiate.global_position.x = (SpawnerGlobal.custom_area_x_pos - spawner.global_position.x)
-		#	enemy_instantiate.global_position.y = (SpawnerGlobal.custom_area_y_pos - spawner.global_position.y)
-			
+	
 			spawner.add_child(enemy_instantiate)
 			SpawnerGlobal.spawner_count[spawner.name] += 1
 			

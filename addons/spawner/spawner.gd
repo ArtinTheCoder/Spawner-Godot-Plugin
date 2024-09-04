@@ -32,6 +32,8 @@ var amount_spawned = 0
 
 var custom_area_pos = Vector2(0, 0)
 
+var warning_printed = {}
+
 func _ready():
 	var spawner_node = self
 	spawner_node.child_entered_tree.connect(_on_child_entered_tree)
@@ -69,19 +71,24 @@ func _validate_property(property : Dictionary) -> void:
 			property.usage &= ~PROPERTY_USAGE_GROUP
 
 func get_random_pos_2d(enemy: PackedScene):
-
-	
 	if area_2d != null:
-		
 		var shape = area_2d.get_shape()
-		var top_left_corner = area_2d.global_position - (area_2d.shape.size / 2)
-	
-		if shape is RectangleShape2D:
-			custom_area_pos.x = randi_range(top_left_corner.x + (enemy_size.x / 2), top_left_corner.x + area_2d.shape.size.x - (enemy_size.x / 2)) 
-			
-			custom_area_pos.y = randi_range(top_left_corner.y + (enemy_size.y / 2), top_left_corner.y + area_2d.shape.size.y - (enemy_size.y / 2)) 
 		
-		else:
+		if shape is RectangleShape2D:
+			var top_left_corner = area_2d.global_position - (area_2d.shape.size / 2)
+			
+			if shape.size < enemy_size and !warning_printed.has("ShapeSizeSmallerThanEnemySize"):
+				print("PLEASE MAKE SURE TO INCREASE THE AREA SPAWN BECAUSE IT'S SMALLER THAN THE ENEMY")
+				warning_printed["ShapeSizeSmallerThanEnemySize"] = 1
+		
+			custom_area_pos.x = randi_range(top_left_corner.x + (enemy_size.x / 2), top_left_corner.x + area_2d.shape.size.x - (enemy_size.x / 2)) 
+				
+			custom_area_pos.y = randi_range(top_left_corner.y + (enemy_size.y / 2), top_left_corner.y + area_2d.shape.size.y - (enemy_size.y / 2)) 
+			
+		elif not shape is RectangleShape2D and !warning_printed.has("MustRectangleCollision"):
 			print("IT MUST BE A RECTANGLE COLLISION SHAPE 2D")
-	else:
+			warning_printed["MustRectangleCollision"] = 1
+			
+	elif area_2d == null and !warning_printed.has("NoCollisionShapeAttached"):
 		print("THERE IS NO COLLISION SHAPE ATTACHED TO THIS SCRIPT")
+		warning_printed["NoCollisionShapeAttached"] = 1
