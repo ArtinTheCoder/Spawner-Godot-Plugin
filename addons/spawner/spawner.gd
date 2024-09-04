@@ -89,6 +89,6 @@ func get_random_pos_2d(enemy: PackedScene):
 			print("IT MUST BE A RECTANGLE COLLISION SHAPE 2D")
 			warning_printed["MustRectangleCollision"] = 1
 			
-	elif area_2d == null and !warning_printed.has("NoCollisionShapeAttached"):
+	elif area_2d == null and !warning_printed.has("NoCollisionShapeAttached") and use_custom_areas == true:
 		print("THERE IS NO COLLISION SHAPE ATTACHED TO THIS SCRIPT")
 		warning_printed["NoCollisionShapeAttached"] = 1

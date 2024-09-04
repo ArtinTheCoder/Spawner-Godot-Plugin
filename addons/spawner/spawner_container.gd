@@ -13,9 +13,8 @@ var total_enemies = 0
 
 var current_enemies = 0
 
-var start_spawning : bool
-
 @export var start_waves_onready : bool = true
+var start_spawning : bool = start_waves_onready
 
 func _ready():
 	get_spawners()
@@ -23,7 +22,7 @@ func _ready():
 
 func _on_start_wave(should_start):
 	start_spawning = should_start
-	print(start_spawning)
+
 	
 func get_spawners():
 	for spawner in get_children(true):
@@ -34,7 +33,7 @@ func get_spawners():
 			total_enemies += spawner.enemy_amount_per_spawner
 	
 func _physics_process(delta):
-	if start_waves_onready == true or start_spawning:
+	if start_spawning == true:
 		for i in range(spawners.size()):
 			var spawner_name = spawners[i].name
 
@@ -47,7 +46,7 @@ func _physics_process(delta):
 			if spawners[i].spawner_type != "multiple_spawner":
 				if not SpawnerGlobal.spawner_status[spawner_name] \
 				and SpawnerGlobal.spawner_count[spawner_name] < spawners[i].enemy_amount_per_spawner:
-					#print(spawner_name, " ", SpawnerGlobal.spawner_count[spawner_name])
+					
 					spawn_enemy(spawners[i], spawners[i].custom_area_pos.x, spawners[i].custom_area_pos.y)
 					SpawnerGlobal.spawner_status[spawner_name] = true
 

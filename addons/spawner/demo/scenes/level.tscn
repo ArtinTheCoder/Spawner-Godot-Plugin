@@ -1,9 +1,19 @@
-[gd_scene load_steps=5 format=3 uid="uid://bhhqf0fi18fh6"]
+[gd_scene load_steps=9 format=3 uid="uid://bhhqf0fi18fh6"]
 
 [ext_resource type="Script" path="res://addons/spawner/spawner_container.gd" id="1_pg0ur"]
 [ext_resource type="Script" path="res://addons/spawner/demo/scripts/level.gd" id="1_q614t"]
+[ext_resource type="Script" path="res://addons/spawner/enemy_spawn_res.gd" id="4_ehn45"]
+[ext_resource type="PackedScene" uid="uid://w73b533yvcut" path="res://addons/spawner/demo/scenes/enemy.tscn" id="4_wbmnn"]
+[ext_resource type="Script" path="res://addons/spawner/multiple_spawner.gd" id="5_rvjxj"]
 [ext_resource type="PackedScene" uid="uid://dp8o1bcji8ctp" path="res://addons/spawner/demo/scenes/second_enemy.tscn" id="6_y3ebn"]
 [ext_resource type="Script" path="res://addons/spawner/spawner.gd" id="7_003rp"]
+
+[sub_resource type="Resource" id="Resource_urmt0"]
+script = ExtResource("4_ehn45")
+scene = ExtResource("4_wbmnn")
+chance = 100
+max_amount = 5
+enemy_size = Vector2(128, 128)
 
 [node name="level" type="Node2D"]
 script = ExtResource("1_q614t")
@@ -14,13 +24,16 @@ anchor_mode = 0
 [node name="SpawnerContainer" type="Node" parent="."]
 script = ExtResource("1_pg0ur")
 
-[node name="Spawner" type="Marker2D" parent="SpawnerContainer" node_paths=PackedStringArray("area_2d")]
+[node name="Spawner" type="Marker2D" parent="SpawnerContainer"]
+position = Vector2(510, 240)
 script = ExtResource("7_003rp")
 enemy_scene = ExtResource("6_y3ebn")
-enemy_amount_per_spawner = 10
-use_custom_areas = true
-area_2d = NodePath("../../CollisionShape2D")
-enemy_size = Vector2(128, 128)
+enemy_amount_per_spawner = 5
+
+[node name="MultipleSpawner" type="Marker2D" parent="SpawnerContainer"]
+position = Vector2(650, 234)
+script = ExtResource("5_rvjxj")
+enemy_scene_array = Array[ExtResource("4_ehn45")]([SubResource("Resource_urmt0")])
 
 [node name="Start" type="Button" parent="."]
 offset_left = 137.0
@@ -35,12 +48,6 @@ offset_top = 485.0
 offset_right = 242.0
 offset_bottom = 516.0
 text = "Stop  WAVE"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(690.5, 262.5)
-
-[node name="Node2D" type="Node2D" parent="."]
-position = Vector2(424.5, 232.5)
 
 [connection signal="specific_enemy_wave_spawned_multi_spawner" from="SpawnerContainer" to="." method="_on_spawner_container_specific_enemy_wave_spawned_multi_spawner"]
 [connection signal="wave_finished" from="SpawnerContainer" to="." method="_on_spawner_container_wave_finished"]
