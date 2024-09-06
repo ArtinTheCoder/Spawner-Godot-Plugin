@@ -11,13 +11,13 @@ func _physics_process(delta):
 	move_and_slide()
 	
 func get_input():
-	var input_direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+	var input_direction = Input.get_vector("Left", "Right", "Forward", "Backward")
 	
-	if Input.is_action_pressed("ui_left"):
+	if Input.is_action_pressed("Left"):
 		$Player.flip_h = true
 		$AnimationPlayer.play("walk")
 	
-	elif Input.is_action_pressed("ui_right"):
+	elif Input.is_action_pressed("Right"):
 		$Player.flip_h = false
 		$AnimationPlayer.play("walk")
 	
