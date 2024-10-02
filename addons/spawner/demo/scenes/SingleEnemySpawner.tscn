@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://plmn76nkfm7k"]
+
+[ext_resource type="Texture2D" uid="uid://beeu1eyfxgrf" path="res://addons/spawner/demo/assets/spawner.png" id="1_i6byh"]
+[ext_resource type="Script" path="res://addons/spawner/spawner_container.gd" id="2_qfsni"]
+[ext_resource type="Script" path="res://addons/spawner/spawner.gd" id="3_bstwn"]
+[ext_resource type="PackedScene" uid="uid://w73b533yvcut" path="res://addons/spawner/demo/scenes/enemy.tscn" id="4_33fx1"]
+
+[node name="SingleEnemySpawner" type="StaticBody2D"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+scale = Vector2(0.45, 0.45)
+polygon = PackedVector2Array(-35, 21, -35, -21, 0, -39, 35, -21, 35, 21, 0, 39)
+
+[node name="Outline" type="Sprite2D" parent="."]
+modulate = Color(0, 0, 0, 1)
+scale = Vector2(0.12, 0.12)
+texture = ExtResource("1_i6byh")
+
+[node name="SpawnerImg" type="Sprite2D" parent="."]
+scale = Vector2(0.115, 0.115)
+texture = ExtResource("1_i6byh")
+
+[node name="SpawnerContainer" type="Node2D" parent="."]
+script = ExtResource("2_qfsni")
+
+[node name="Spawner" type="Marker2D" parent="SpawnerContainer"]
+position = Vector2(0, -38)
+script = ExtResource("3_bstwn")
+enemy_scene = ExtResource("4_33fx1")
+enemy_amount_per_spawner = 10
+time_between_spawns = 4

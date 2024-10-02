@@ -1,15 +1,12 @@
 extends Node2D
 
-@onready var spawner_container = $SpawnerContainer
+@onready var single_enemy_spawner = $SingleEnemySpawner
 
-func _on_start_pressed():
-	spawner_container.start_wave.emit(true)
+var single_enemy_spawner_node
 
-func _on_stop_pressed():
-	spawner_container.start_wave.emit(false)
+func _ready():
+	single_enemy_spawner_node = single_enemy_spawner.get_node("SpawnerContainer/Spawner")
+	single_enemy_spawner_node.amount_enemy_spawned.connect(single_amount_of_enemy_spawned)
 
-func _on_spawner_container_wave_finished():
-	print("SPAWNER CONTAINER FINISHED")
-
-func _on_spawner_container_specific_enemy_wave_spawned_multi_spawner(enemy):
-	print("SPECIFIC ENEMY FINISH: ", enemy)
+func single_amount_of_enemy_spawned(amount):
+	print(amount)

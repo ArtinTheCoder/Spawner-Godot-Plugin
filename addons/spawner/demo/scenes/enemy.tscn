@@ -1,17 +1,29 @@
-[gd_scene load_steps=3 format=3 uid="uid://w73b533yvcut"]
+[gd_scene load_steps=4 format=3 uid="uid://w73b533yvcut"]
 
-[ext_resource type="Texture2D" uid="uid://by14pwjaypj64" path="res://icon.svg" id="1_r0jl0"]
+[ext_resource type="Texture2D" uid="uid://ddr0ves24yqkb" path="res://addons/spawner/demo/assets/kenney_tiny-dungeon/Tilemap/tilemap.png" id="1_fvted"]
+[ext_resource type="Script" path="res://addons/spawner/demo/scripts/enemy.gd" id="1_vey5j"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_rgj8p"]
-size = Vector2(124, 130)
+[sub_resource type="Curve2D" id="Curve2D_v47s2"]
+_data = {
+"points": PackedVector2Array(-6.8751, 1.8953, 6.8751, -1.8953, 12, 0, 0, 0, 0, 0, 79, 0, 0, 0, 0, 0, 99, 12, 0, 0, 0, 0, 103, 51, 0, 0, 0, 0, 8, 53, 0, 0, 0, 0, 12, 0)
+}
+point_count = 6
 
-[node name="Enemy" type="RigidBody2D"]
+[node name="Enemy" type="CharacterBody2D"]
+script = ExtResource("1_vey5j")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_rgj8p")
+[node name="Path2D" type="Path2D" parent="."]
+curve = SubResource("Curve2D_v47s2")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_r0jl0")
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+position = Vector2(12, 0)
+rotates = false
 
-[node name="Node2D" type="Node2D" parent="."]
-position = Vector2(-213, 22)
+[node name="Sprite2D" type="Sprite2D" parent="Path2D/PathFollow2D"]
+texture = ExtResource("1_fvted")
+hframes = 13
+vframes = 11
+frame = 117
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Path2D/PathFollow2D"]
+polygon = PackedVector2Array(-5, 6, 5, 6, 6, 5, 7, 5, 7, 1, 6, 1, 6, -1, 5, -1, 5, -4, 4, -4, 4, -5, 3, -5, 3, -6, -3, -6, -3, -5, -4, -5, -4, -4, -5, -4, -5, -1, -6, -1, -6, 1, -7, 1, -7, 5, -7, 6)

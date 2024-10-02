@@ -1,5 +1,4 @@
 extends Node
-class_name SpawnerContainer
 
 signal start_wave(should_start)
 

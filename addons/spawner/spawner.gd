@@ -2,6 +2,7 @@
 extends Marker2D
 
 signal finished_spawning
+signal amount_enemy_spawned(amount_of_enemies_spawned)
 
 @export_category("Enemy")
 
@@ -42,17 +43,21 @@ func _ready():
 		print("NO ENEMY SCENE")
 	
 	get_random_pos_2d(enemy_scene)
-	
+
+
 func _on_child_entered_tree(node):
 	get_random_pos_2d(enemy_scene)
 	if use_custom_areas:
 		node.global_position = custom_area_pos
-		
+	
+	amount_spawned += 1
+	
+	amount_enemy_spawned.emit(amount_spawned)
+
+	
 	await get_tree().create_timer(time_between_spawns).timeout
 	
 	SpawnerGlobal.spawner_status[self.name] = false
-	
-	amount_spawned += 1
 	
 	if enemy_amount_per_spawner == amount_spawned:
 		finished_spawning.emit()
@@ -75,6 +80,9 @@ func get_random_pos_2d(enemy: PackedScene):
 		var shape = area_2d.get_shape()
 		
 		if shape is RectangleShape2D:
+			if area_2d.disabled != true:
+				print("TURN ON DISABLED MODE ON YOUR COLLSION SHAPE SO IT DOESN'T INTERFERE WITH YOUR GAME")
+
 			var top_left_corner = area_2d.global_position - (area_2d.shape.size / 2)
 			
 			if shape.size < enemy_size and !warning_printed.has("ShapeSizeSmallerThanEnemySize"):
@@ -84,6 +92,7 @@ func get_random_pos_2d(enemy: PackedScene):
 			custom_area_pos.x = randi_range(top_left_corner.x + (enemy_size.x / 2), top_left_corner.x + area_2d.shape.size.x - (enemy_size.x / 2)) 
 				
 			custom_area_pos.y = randi_range(top_left_corner.y + (enemy_size.y / 2), top_left_corner.y + area_2d.shape.size.y - (enemy_size.y / 2)) 
+			
 			
 		elif not shape is RectangleShape2D and !warning_printed.has("MustRectangleCollision"):
 			print("IT MUST BE A RECTANGLE COLLISION SHAPE 2D")
