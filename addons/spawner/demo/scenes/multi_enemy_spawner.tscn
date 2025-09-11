@@ -1,0 +1,59 @@
+[gd_scene load_steps=10 format=3 uid="uid://c6jknn8gpcs6y"]
+
+[ext_resource type="Texture2D" uid="uid://beeu1eyfxgrf" path="res://addons/spawner/demo/assets/spawner.png" id="1_3un8m"]
+[ext_resource type="Script" uid="uid://chp5fbifa7aq2" path="res://addons/spawner/spawner_container.gd" id="2_e7tao"]
+[ext_resource type="Script" uid="uid://cplfxhvk0iugl" path="res://addons/spawner/multiple_spawner.gd" id="3_c6oe5"]
+[ext_resource type="Script" uid="uid://db8a8mu80kn7v" path="res://addons/spawner/enemy_spawn_res.gd" id="4_pwak8"]
+[ext_resource type="PackedScene" uid="uid://bmanbpk285aeq" path="res://addons/spawner/demo/scenes/ghost.tscn" id="5_4rdqb"]
+[ext_resource type="PackedScene" uid="uid://bhubeyl2ian0n" path="res://addons/spawner/demo/scenes/cyclops.tscn" id="6_yhgwq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_24bh4"]
+size = Vector2(138, 76)
+
+[sub_resource type="Resource" id="Resource_7pbq7"]
+script = ExtResource("4_pwak8")
+scene = ExtResource("5_4rdqb")
+chance = 50
+max_amount = 3
+enemy_size = Vector2(16, 16)
+metadata/_custom_type_script = "uid://db8a8mu80kn7v"
+
+[sub_resource type="Resource" id="Resource_asjo3"]
+script = ExtResource("4_pwak8")
+scene = ExtResource("6_yhgwq")
+chance = 50
+max_amount = 3
+enemy_size = Vector2(16, 16)
+metadata/_custom_type_script = "uid://db8a8mu80kn7v"
+
+[node name="MultiEnemySpawner" type="StaticBody2D"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+scale = Vector2(0.45, 0.45)
+polygon = PackedVector2Array(-35, 21, -35, -21, 0, -39, 35, -21, 35, 21, 0, 39)
+
+[node name="SpawnZoneCol" type="CollisionShape2D" parent="."]
+position = Vector2(104, 0)
+shape = SubResource("RectangleShape2D_24bh4")
+disabled = true
+
+[node name="Outline" type="Sprite2D" parent="."]
+modulate = Color(0, 0, 0, 1)
+scale = Vector2(0.12, 0.12)
+texture = ExtResource("1_3un8m")
+
+[node name="SpawnerImg" type="Sprite2D" parent="."]
+scale = Vector2(0.115, 0.115)
+texture = ExtResource("1_3un8m")
+
+[node name="SpawnerContainer" type="Node2D" parent="."]
+script = ExtResource("2_e7tao")
+start_waves_onready = false
+max_active_enemies = 3
+
+[node name="MultipleSpawner" type="Marker2D" parent="SpawnerContainer" node_paths=PackedStringArray("area_2d")]
+script = ExtResource("3_c6oe5")
+enemy_scene_array = Array[ExtResource("4_pwak8")]([SubResource("Resource_7pbq7"), SubResource("Resource_asjo3")])
+use_custom_areas = true
+area_2d = NodePath("../../SpawnZoneCol")
+metadata/_custom_type_script = "uid://cplfxhvk0iugl"

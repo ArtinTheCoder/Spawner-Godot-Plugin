@@ -1,15 +1,37 @@
-[gd_scene load_steps=5 format=3 uid="uid://plmn76nkfm7k"]
+[gd_scene load_steps=8 format=3 uid="uid://plmn76nkfm7k"]
 
 [ext_resource type="Texture2D" uid="uid://beeu1eyfxgrf" path="res://addons/spawner/demo/assets/spawner.png" id="1_i6byh"]
-[ext_resource type="Script" path="res://addons/spawner/spawner_container.gd" id="2_qfsni"]
-[ext_resource type="Script" path="res://addons/spawner/spawner.gd" id="3_bstwn"]
-[ext_resource type="PackedScene" uid="uid://w73b533yvcut" path="res://addons/spawner/demo/scenes/enemy.tscn" id="4_33fx1"]
+[ext_resource type="Script" uid="uid://chp5fbifa7aq2" path="res://addons/spawner/spawner_container.gd" id="2_qfsni"]
+[ext_resource type="Script" uid="uid://cyqw11e4vy5om" path="res://addons/spawner/single_spawner.gd" id="3_bstwn"]
+[ext_resource type="Script" uid="uid://tqqqd30jt2ca" path="res://addons/spawner/demo/scripts/enemy.gd" id="4_s4qir"]
+[ext_resource type="Texture2D" uid="uid://ddr0ves24yqkb" path="res://addons/spawner/demo/assets/kenney_tiny-dungeon/Tilemap/tilemap.png" id="5_ygnwo"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_24bh4"]
+size = Vector2(138, 76)
+
+[sub_resource type="PackedScene" id="PackedScene_2x5sp"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("Ghost", "z_index", "script", "speed", "change_dir_time", "CharacterBody2D", "Sprite2D", "position", "texture", "hframes", "vframes", "frame", "CollisionPolygon2D", "polygon"),
+"node_count": 3,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 5, 0, -1, 4, 1, 0, 2, 1, 3, 2, 4, 3, 0, 0, 0, 6, 6, -1, 5, 7, 4, 8, 5, 9, 6, 10, 7, 11, 8, 0, 0, 0, 12, 12, -1, 2, 7, 4, 13, 9, 0),
+"variants": [1, ExtResource("4_s4qir"), 20.0, 1.0, Vector2(1, 1), ExtResource("5_ygnwo"), 13, 11, 117, PackedVector2Array(-5, 6, 5, 6, 6, 5, 7, 5, 7, 1, 6, 1, 6, -1, 5, -1, 5, -4, 4, -4, 4, -5, 3, -5, 3, -6, -3, -6, -3, -5, -4, -5, -4, -4, -5, -4, -5, -1, -6, -1, -6, 1, -7, 1, -7, 5, -7, 6)],
+"version": 3
+}
 
 [node name="SingleEnemySpawner" type="StaticBody2D"]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 scale = Vector2(0.45, 0.45)
 polygon = PackedVector2Array(-35, 21, -35, -21, 0, -39, 35, -21, 35, 21, 0, 39)
+
+[node name="SpawnZoneCol" type="CollisionShape2D" parent="."]
+position = Vector2(104, 0)
+shape = SubResource("RectangleShape2D_24bh4")
+disabled = true
 
 [node name="Outline" type="Sprite2D" parent="."]
 modulate = Color(0, 0, 0, 1)
@@ -22,10 +44,12 @@ texture = ExtResource("1_i6byh")
 
 [node name="SpawnerContainer" type="Node2D" parent="."]
 script = ExtResource("2_qfsni")
+max_active_enemies = 3
 
-[node name="Spawner" type="Marker2D" parent="SpawnerContainer"]
-position = Vector2(0, -38)
+[node name="Spawner" type="Marker2D" parent="SpawnerContainer" node_paths=PackedStringArray("area_2d")]
 script = ExtResource("3_bstwn")
-enemy_scene = ExtResource("4_33fx1")
-enemy_amount_per_spawner = 10
-time_between_spawns = 4
+enemy_scene = SubResource("PackedScene_2x5sp")
+enemy_amount_per_spawner = 6
+use_custom_areas = true
+area_2d = NodePath("../../SpawnZoneCol")
+enemy_size = Vector2(16, 16)

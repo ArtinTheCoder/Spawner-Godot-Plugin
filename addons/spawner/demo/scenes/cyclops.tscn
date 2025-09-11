@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://bhubeyl2ian0n"]
+
+[ext_resource type="Script" uid="uid://tqqqd30jt2ca" path="res://addons/spawner/demo/scripts/enemy.gd" id="1_qbg28"]
+[ext_resource type="Texture2D" uid="uid://ddr0ves24yqkb" path="res://addons/spawner/demo/assets/kenney_tiny-dungeon/Tilemap/tilemap.png" id="2_d2q88"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ftf5t"]
+radius = 7.0
+
+[node name="Cyclops" type="CharacterBody2D"]
+z_index = 1
+input_pickable = true
+script = ExtResource("1_qbg28")
+speed = 20.0
+change_dir_time = 1.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(1, 1)
+texture = ExtResource("2_d2q88")
+hframes = 12
+vframes = 11
+frame = 109
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 3)
+shape = SubResource("CircleShape2D_ftf5t")
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

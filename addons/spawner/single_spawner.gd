@@ -44,7 +44,6 @@ func _ready():
 	
 	get_random_pos_2d(enemy_scene)
 
-
 func _on_child_entered_tree(node):
 	get_random_pos_2d(enemy_scene)
 	if use_custom_areas:
@@ -92,7 +91,6 @@ func get_random_pos_2d(enemy: PackedScene):
 			custom_area_pos.x = randi_range(top_left_corner.x + (enemy_size.x / 2), top_left_corner.x + area_2d.shape.size.x - (enemy_size.x / 2)) 
 				
 			custom_area_pos.y = randi_range(top_left_corner.y + (enemy_size.y / 2), top_left_corner.y + area_2d.shape.size.y - (enemy_size.y / 2)) 
-			
 			
 		elif not shape is RectangleShape2D and !warning_printed.has("MustRectangleCollision"):
 			print("IT MUST BE A RECTANGLE COLLISION SHAPE 2D")

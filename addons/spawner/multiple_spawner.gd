@@ -2,6 +2,7 @@
 extends Marker2D
 
 signal finished_spawning
+signal amount_enemy_spawned(amount_of_enemies_spawned)
 
 @export_category("Enemy")
 
@@ -29,11 +30,8 @@ var rng = RandomNumberGenerator.new()
 var spawner_type = "multiple_spawner"
 
 var culminating_spawner_amount = 0
-
 var enemy_counts = {}
-
 var amount_spawned = 0
-
 var custom_area_pos = Vector2(0, 0)
 
 var warning_printed = {}
@@ -45,8 +43,7 @@ func _ready():
 		if data.chance > 100:
 			print("THE TOTAL AMOUNT OF CHANCE IS OVER 100!", "SPAWNER NAME:", self.name)
 	
-	var spawner_node = self
-	spawner_node.child_entered_tree.connect(_on_child_entered_tree)
+	self.child_entered_tree.connect(_on_child_entered_tree)
 	
 func choose_enemy():
 	var available_enemies = enemy_scene_array.filter(func(data): return enemy_counts[data.scene.resource_path] < data.max_amount)
@@ -75,27 +72,21 @@ func choose_enemy():
 	rng.randomize()
 	
 	return null
-	
-func _on_child_entered_tree(node):
 
-	if use_custom_areas:
-		node.global_position = custom_area_pos
-	
-	await get_tree().create_timer(time_between_spawns).timeout
-	
-	SpawnerGlobal.spawner_status[self.name] = false
-	amount_spawned += 1
-	
-	if total_amount_to_spawn() == amount_spawned:
+func _on_child_entered_tree(node): 
+	if use_custom_areas: 
+		node.global_position = custom_area_pos 
+		
+	amount_spawned += 1 
+		
+	amount_enemy_spawned.emit(amount_spawned) 
+		
+	await get_tree().create_timer(time_between_spawns).timeout 
+		
+	SpawnerGlobal.spawner_status[self.name] = false 
+
+	if culminating_spawner_amount == amount_spawned: 
 		finished_spawning.emit()
-	
-func total_amount_to_spawn():
-	var total_enemies_spawned = 0
-	
-	for enemy in enemy_scene_array.size():
-		total_enemies_spawned += enemy_scene_array[enemy].max_amount
-
-	return total_enemies_spawned
 
 func _validate_property(property : Dictionary) -> void:
 	if property.name in custom_areas:
@@ -125,7 +116,6 @@ func get_random_pos_2d(enemy: EnemyResource):
 			
 			custom_area_pos.y = randi_range(top_left_corner.y + (enemy.enemy_size.y / 2), top_left_corner.y + area_2d.shape.size.y - (enemy.enemy_size.y / 2)) 
 			
-			
 		elif not shape is RectangleShape2D and !warning_printed.has("MustRectangleCollision"):
 			print("IT MUST BE A RECTANGLE COLLISION SHAPE 2D")
 			warning_printed["MustRectangleCollision"] = 1
@@ -133,5 +123,3 @@ func get_random_pos_2d(enemy: EnemyResource):
 	elif area_2d == null and !warning_printed.has("NoCollisionShapeAttached"):
 		print("THERE IS NO COLLISION SHAPE ATTACHED TO THIS SCRIPT")
 		warning_printed["NoCollisionShapeAttached"] = 1
-
-		
