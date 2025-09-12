@@ -24,5 +24,7 @@ func _pick_new_direction():
 	move_dir = Vector2(randf() * 2 - 1, randf() * 2 - 1).normalized()
 	time_left = change_dir_time + randf() * 0.5 # add some randomness
 
-func _on_mouse_entered() -> void:
-	queue_free()
+func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			queue_free()

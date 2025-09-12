@@ -4,8 +4,8 @@
 [ext_resource type="Script" uid="uid://chp5fbifa7aq2" path="res://addons/spawner/spawner_container.gd" id="2_e7tao"]
 [ext_resource type="Script" uid="uid://cplfxhvk0iugl" path="res://addons/spawner/multiple_spawner.gd" id="3_c6oe5"]
 [ext_resource type="Script" uid="uid://db8a8mu80kn7v" path="res://addons/spawner/enemy_spawn_res.gd" id="4_pwak8"]
-[ext_resource type="PackedScene" uid="uid://bmanbpk285aeq" path="res://addons/spawner/demo/scenes/ghost.tscn" id="5_4rdqb"]
-[ext_resource type="PackedScene" uid="uid://bhubeyl2ian0n" path="res://addons/spawner/demo/scenes/cyclops.tscn" id="6_yhgwq"]
+[ext_resource type="PackedScene" uid="uid://bmanbpk285aeq" path="res://addons/spawner/demo/scenes/enemies/ghost.tscn" id="5_4rdqb"]
+[ext_resource type="PackedScene" uid="uid://bhubeyl2ian0n" path="res://addons/spawner/demo/scenes/enemies/cyclops.tscn" id="6_yhgwq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_24bh4"]
 size = Vector2(138, 76)
@@ -33,6 +33,7 @@ scale = Vector2(0.45, 0.45)
 polygon = PackedVector2Array(-35, 21, -35, -21, 0, -39, 35, -21, 35, 21, 0, 39)
 
 [node name="SpawnZoneCol" type="CollisionShape2D" parent="."]
+light_mask = 0
 position = Vector2(104, 0)
 shape = SubResource("RectangleShape2D_24bh4")
 disabled = true

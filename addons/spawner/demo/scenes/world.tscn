@@ -2,8 +2,8 @@
 
 [ext_resource type="Texture2D" uid="uid://n7uyavijrlsy" path="res://addons/spawner/demo/assets/kenney_tiny-dungeon/Tilemap/tilemap_packed.png" id="1_0ggv2"]
 [ext_resource type="Script" uid="uid://c8llrg1g5v430" path="res://addons/spawner/demo/scripts/level.gd" id="1_ggmd7"]
-[ext_resource type="PackedScene" uid="uid://plmn76nkfm7k" path="res://addons/spawner/demo/scenes/SingleEnemySpawner.tscn" id="3_x2l7e"]
-[ext_resource type="PackedScene" uid="uid://c6jknn8gpcs6y" path="res://addons/spawner/demo/scenes/multi_enemy_spawner.tscn" id="4_5chyv"]
+[ext_resource type="PackedScene" uid="uid://plmn76nkfm7k" path="res://addons/spawner/demo/scenes/spawner_types/single_enemy_spawner.tscn" id="3_x2l7e"]
+[ext_resource type="PackedScene" uid="uid://c6jknn8gpcs6y" path="res://addons/spawner/demo/scenes/spawner_types/multi_enemy_spawner.tscn" id="4_5chyv"]
 [ext_resource type="FontFile" uid="uid://5q2lgvb4npbf" path="res://addons/spawner/demo/assets/Minecraft.ttf" id="4_y6coj"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_3bi2l"]
@@ -357,6 +357,7 @@ offset_left = 80.0
 offset_top = 92.0
 offset_right = 221.0
 offset_bottom = 167.0
+mouse_filter = 2
 color = Color(1, 0.121569, 0.0823529, 0.32549)
 
 [node name="Title" type="Label" parent="SingleSpawnerInfo"]
@@ -455,6 +456,7 @@ offset_left = 83.0
 offset_top = 117.0
 offset_right = 224.0
 offset_bottom = 192.0
+mouse_filter = 2
 color = Color(1, 0.121569, 0.0823529, 0.32549)
 
 [node name="Title" type="Label" parent="MultiSpawnerInfo"]
