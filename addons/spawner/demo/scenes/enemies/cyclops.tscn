@@ -7,6 +7,7 @@
 radius = 12.0
 
 [node name="Cyclops" type="CharacterBody2D"]
+z_index = 1
 input_pickable = true
 script = ExtResource("1_of4ko")
 speed = 15.0

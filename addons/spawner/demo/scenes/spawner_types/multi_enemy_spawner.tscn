@@ -10,19 +10,21 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_24bh4"]
 size = Vector2(138, 76)
 
-[sub_resource type="Resource" id="Resource_7pbq7"]
+[sub_resource type="Resource" id="Resource_vjd8l"]
+resource_local_to_scene = true
 script = ExtResource("4_pwak8")
 scene = ExtResource("5_4rdqb")
 chance = 50
-max_amount = 3
+max_amount = 2
 enemy_size = Vector2(16, 16)
 metadata/_custom_type_script = "uid://db8a8mu80kn7v"
 
-[sub_resource type="Resource" id="Resource_asjo3"]
+[sub_resource type="Resource" id="Resource_4hlpu"]
+resource_local_to_scene = true
 script = ExtResource("4_pwak8")
 scene = ExtResource("6_yhgwq")
 chance = 50
-max_amount = 3
+max_amount = 2
 enemy_size = Vector2(16, 16)
 metadata/_custom_type_script = "uid://db8a8mu80kn7v"
 
@@ -54,7 +56,7 @@ max_active_enemies = 3
 
 [node name="MultipleSpawner" type="Marker2D" parent="SpawnerContainer" node_paths=PackedStringArray("area_2d")]
 script = ExtResource("3_c6oe5")
-enemy_scene_array = Array[ExtResource("4_pwak8")]([SubResource("Resource_7pbq7"), SubResource("Resource_asjo3")])
+enemy_scene_array = Array[ExtResource("4_pwak8")]([SubResource("Resource_vjd8l"), SubResource("Resource_4hlpu")])
 use_custom_areas = true
 area_2d = NodePath("../../SpawnZoneCol")
 metadata/_custom_type_script = "uid://cplfxhvk0iugl"

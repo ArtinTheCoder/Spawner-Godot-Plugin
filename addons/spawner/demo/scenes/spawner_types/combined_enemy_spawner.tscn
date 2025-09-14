@@ -1,0 +1,76 @@
+[gd_scene load_steps=11 format=3 uid="uid://byis7a5o3hsb7"]
+
+[ext_resource type="Texture2D" uid="uid://beeu1eyfxgrf" path="res://addons/spawner/demo/assets/spawner.png" id="1_k06oy"]
+[ext_resource type="Script" uid="uid://chp5fbifa7aq2" path="res://addons/spawner/spawner_container.gd" id="2_0rilr"]
+[ext_resource type="Script" uid="uid://cplfxhvk0iugl" path="res://addons/spawner/multiple_spawner.gd" id="3_ticih"]
+[ext_resource type="Script" uid="uid://db8a8mu80kn7v" path="res://addons/spawner/enemy_spawn_res.gd" id="4_wv8xv"]
+[ext_resource type="PackedScene" uid="uid://bmanbpk285aeq" path="res://addons/spawner/demo/scenes/enemies/ghost.tscn" id="5_3fn3r"]
+[ext_resource type="PackedScene" uid="uid://bhubeyl2ian0n" path="res://addons/spawner/demo/scenes/enemies/cyclops.tscn" id="6_c4ajt"]
+[ext_resource type="Script" uid="uid://cyqw11e4vy5om" path="res://addons/spawner/single_spawner.gd" id="7_wrskv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_24bh4"]
+resource_local_to_scene = true
+size = Vector2(138, 76)
+
+[sub_resource type="Resource" id="Resource_k06oy"]
+script = ExtResource("4_wv8xv")
+scene = ExtResource("5_3fn3r")
+chance = 50
+max_amount = 2
+enemy_size = Vector2(16, 16)
+metadata/_custom_type_script = "uid://db8a8mu80kn7v"
+
+[sub_resource type="Resource" id="Resource_0rilr"]
+script = ExtResource("4_wv8xv")
+scene = ExtResource("6_c4ajt")
+chance = 50
+max_amount = 2
+enemy_size = Vector2(16, 16)
+metadata/_custom_type_script = "uid://db8a8mu80kn7v"
+
+[node name="CombinedEnemySpawner" type="StaticBody2D"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+scale = Vector2(0.45, 0.45)
+polygon = PackedVector2Array(-35, 21, -35, -21, 0, -39, 35, -21, 35, 21, 0, 39)
+
+[node name="MultiSpawnZoneCol" type="CollisionShape2D" parent="."]
+light_mask = 0
+position = Vector2(104, 0)
+shape = SubResource("RectangleShape2D_24bh4")
+disabled = true
+
+[node name="SingleSpawnZoneCol" type="CollisionShape2D" parent="."]
+light_mask = 0
+position = Vector2(-104, 0)
+shape = SubResource("RectangleShape2D_24bh4")
+disabled = true
+
+[node name="Outline" type="Sprite2D" parent="."]
+modulate = Color(0, 0, 0, 1)
+scale = Vector2(0.12, 0.12)
+texture = ExtResource("1_k06oy")
+
+[node name="SpawnerImg" type="Sprite2D" parent="."]
+scale = Vector2(0.115, 0.115)
+texture = ExtResource("1_k06oy")
+
+[node name="SpawnerContainer" type="Node2D" parent="."]
+script = ExtResource("2_0rilr")
+start_waves_onready = false
+max_active_enemies = 4
+
+[node name="Spawner" type="Marker2D" parent="SpawnerContainer" node_paths=PackedStringArray("area_2d")]
+script = ExtResource("7_wrskv")
+enemy_scene = ExtResource("5_3fn3r")
+enemy_amount_per_spawner = 5
+use_custom_areas = true
+area_2d = NodePath("../../SingleSpawnZoneCol")
+metadata/_custom_type_script = "uid://cyqw11e4vy5om"
+
+[node name="MultipleSpawner" type="Marker2D" parent="SpawnerContainer" node_paths=PackedStringArray("area_2d")]
+script = ExtResource("3_ticih")
+enemy_scene_array = Array[ExtResource("4_wv8xv")]([SubResource("Resource_k06oy"), SubResource("Resource_0rilr")])
+use_custom_areas = true
+area_2d = NodePath("../../MultiSpawnZoneCol")
+metadata/_custom_type_script = "uid://cplfxhvk0iugl"

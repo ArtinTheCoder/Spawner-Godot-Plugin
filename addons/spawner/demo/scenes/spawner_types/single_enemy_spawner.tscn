@@ -30,7 +30,8 @@ texture = ExtResource("1_i6byh")
 
 [node name="SpawnerContainer" type="Node2D" parent="."]
 script = ExtResource("2_qfsni")
-max_active_enemies = 3
+start_waves_onready = false
+max_active_enemies = 5
 
 [node name="Spawner" type="Marker2D" parent="SpawnerContainer" node_paths=PackedStringArray("area_2d")]
 script = ExtResource("3_bstwn")

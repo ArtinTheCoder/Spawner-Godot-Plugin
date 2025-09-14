@@ -53,7 +53,6 @@ func _on_child_entered_tree(node):
 	
 	amount_enemy_spawned.emit(amount_spawned)
 
-	
 	await get_tree().create_timer(time_between_spawns).timeout
 	
 	SpawnerGlobal.spawner_status[self.name] = false
