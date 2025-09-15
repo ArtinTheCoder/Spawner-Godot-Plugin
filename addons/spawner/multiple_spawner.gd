@@ -83,7 +83,7 @@ func _on_child_entered_tree(node):
 		
 	await get_tree().create_timer(time_between_spawns).timeout 
 	
-	SpawnerGlobal.spawner_status[self.name] = false
+	get_parent().spawner_data.spawner_status[self.name] = false
 	
 	if culminating_spawner_amount == amount_spawned: 
 		finished_spawning.emit()

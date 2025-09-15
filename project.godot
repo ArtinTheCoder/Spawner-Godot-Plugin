@@ -15,10 +15,6 @@ config/tags=PackedStringArray("plugins")
 run/main_scene="uid://5shwktcwgxlk"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 
-[autoload]
-
-SpawnerGlobal="*res://addons/spawner/SpawnerGlobal.gd"
-
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/spawner/plugin.cfg")

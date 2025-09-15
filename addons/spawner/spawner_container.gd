@@ -3,20 +3,22 @@ signal start_wave(should_start)
 signal wave_finished
 # TODO
 #signal specific_enemy_wave_spawned_multi_spawner(enemy)
+
+@export var start_waves_onready : bool = true
+@export var max_active_enemies : int = 10  # Maximum number of active enemies before pausing
+
 var spawners = []
 var total_enemies = 0
 var current_enemies = 0
-@export var start_waves_onready : bool = true
-@export var max_active_enemies : int = 10  # Maximum number of active enemies before pausing
-@onready var SpawnerGlobal = get_node_or_null("/root/SpawnerGlobal")
+
+var spawner_data = SpawnerData.new()
+
 var start_spawning : bool
 var all_active_enemies = []  # Array to track all active enemies for pausing
 var current_spawner_index = 0  # Round-robin spawner selection
 var spawners_per_frame = 1  # How many spawners can spawn per frame
 
 func _ready():
-	if SpawnerGlobal == null:
-		print("SpawnerGlobal is NULL")
 	start_spawning = start_waves_onready
 	get_spawners()
 	start_wave.connect(_on_start_wave)
@@ -60,21 +62,21 @@ func _physics_process(delta):
 
 func process_spawner(spawner):
 	var name = spawner.name
-	if SpawnerGlobal:
-		if not SpawnerGlobal.spawner_status.has(name):
-			SpawnerGlobal.spawner_status[name] = false
-			SpawnerGlobal.spawner_count[name] = 0
+	if spawner_data:
+		if not spawner_data.spawner_status.has(name):
+			spawner_data.spawner_status[name] = false
+			spawner_data.spawner_count[name] = 0
 		else:
 			if spawner.spawner_type != "multiple_spawner":
 				# single spawner
-				if not SpawnerGlobal.spawner_status[name] \
-				and SpawnerGlobal.spawner_count[name] < spawner.enemy_amount_per_spawner:
+				if not spawner_data.spawner_status[name] \
+				and spawner_data.spawner_count[name] < spawner.enemy_amount_per_spawner:
 					spawn_enemy(spawner, spawner.custom_area_pos.x, spawner.custom_area_pos.y)
-					SpawnerGlobal.spawner_status[name] = true
+					spawner_data.spawner_status[name] = true
 			else:
 				# multiple spawner
-				if not SpawnerGlobal.spawner_status[name]:
-					SpawnerGlobal.spawner_status[name] = true
+				if not spawner_data.spawner_status[name]:
+					spawner_data.spawner_status[name] = true
 					var pos = spawner.custom_area_pos if spawner.use_custom_areas else spawner.global_position
 					spawn_enemy(spawner, pos.x, pos.y)
 
@@ -85,17 +87,17 @@ func spawn_enemy(spawner, x_pos, y_pos):
 	else:
 		if spawner.spawner_type == "multiple_spawner":
 			var enemy_data = spawner.choose_enemy()
-			if enemy_data and SpawnerGlobal.spawner_count[spawner.name] < spawner.culminating_spawner_amount:
+			if enemy_data and spawner_data.spawner_count[spawner.name] < spawner.culminating_spawner_amount:
 				var inst = enemy_data.scene.instantiate()
 				spawner.add_child(inst)
 				all_active_enemies.append(inst)
 				# enemy's "death signal"
 				if inst.has_signal("tree_exiting"):
 					inst.tree_exiting.connect(_on_enemy_died.bind(inst))
-				SpawnerGlobal.spawner_count[spawner.name] += 1
+				spawner_data.spawner_count[spawner.name] += 1
 				
 #			TODO
-				#if SpawnerGlobal.spawner_count[spawner.name] == enemy_data.max_amount:
+				#if spawner_data.spawner_count[spawner.name] == enemy_data.max_amount:
 					#specific_enemy_wave_spawned_multi_spawner.emit(enemy_data)
 				current_enemies += 1
 				
@@ -108,7 +110,7 @@ func spawn_enemy(spawner, x_pos, y_pos):
 			all_active_enemies.append(inst)
 			if inst.has_signal("tree_exiting"):
 				inst.tree_exiting.connect(_on_enemy_died.bind(inst))
-			SpawnerGlobal.spawner_count[spawner.name] += 1
+			spawner_data.spawner_count[spawner.name] += 1
 			current_enemies += 1
 
 func _on_enemy_died(enemy):
