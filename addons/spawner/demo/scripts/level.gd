@@ -49,8 +49,8 @@ func single_spawner_amount_of_enemy_spawned(amount):
 func single_spawner_finished_spawning():
 	print("Single enemy spawner finished spawning.")
 	
-func multiple_spawner_amount_enemy_spawned(amount_of_enemies_spawned):
-	print("Multiple enemy spawner spawned: " + str(amount_of_enemies_spawned))
+func multiple_spawner_amount_enemy_spawned(amount):
+	print("Multiple enemy spawner spawned: " + str(amount))
 
 func multiple_spawner_finished_spawning():
 	print("Multiple enemy spawner finished spawning.")
