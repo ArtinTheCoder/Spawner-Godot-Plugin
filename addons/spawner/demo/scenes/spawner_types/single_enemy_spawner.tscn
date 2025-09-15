@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=3 uid="uid://plmn76nkfm7k"]
 
 [ext_resource type="Texture2D" uid="uid://beeu1eyfxgrf" path="res://addons/spawner/demo/assets/spawner.png" id="1_i6byh"]
-[ext_resource type="Script" uid="uid://chp5fbifa7aq2" path="res://addons/spawner/spawner_container.gd" id="2_qfsni"]
-[ext_resource type="Script" uid="uid://cyqw11e4vy5om" path="res://addons/spawner/single_spawner.gd" id="3_bstwn"]
+[ext_resource type="Script" uid="uid://chp5fbifa7aq2" path="res://addons/spawner/scripts/spawner_container.gd" id="2_qfsni"]
+[ext_resource type="Script" uid="uid://cyqw11e4vy5om" path="res://addons/spawner/scripts/single_spawner.gd" id="3_bstwn"]
 [ext_resource type="PackedScene" uid="uid://bmanbpk285aeq" path="res://addons/spawner/demo/scenes/enemies/ghost.tscn" id="4_24bh4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_24bh4"]
@@ -30,13 +30,12 @@ texture = ExtResource("1_i6byh")
 
 [node name="SpawnerContainer" type="Node2D" parent="."]
 script = ExtResource("2_qfsni")
-start_waves_onready = false
-max_active_enemies = 5
+max_active_enemies = 4
 
 [node name="Spawner" type="Marker2D" parent="SpawnerContainer" node_paths=PackedStringArray("area_2d")]
 script = ExtResource("3_bstwn")
 enemy_scene = ExtResource("4_24bh4")
-enemy_amount_per_spawner = 6
+enemy_amount_per_spawner = 8
 use_custom_areas = true
 area_2d = NodePath("../../SpawnZoneCol")
 enemy_size = Vector2(16, 16)

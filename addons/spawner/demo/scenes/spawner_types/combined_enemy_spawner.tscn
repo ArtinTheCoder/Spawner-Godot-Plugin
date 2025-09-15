@@ -1,12 +1,12 @@
 [gd_scene load_steps=11 format=3 uid="uid://byis7a5o3hsb7"]
 
 [ext_resource type="Texture2D" uid="uid://beeu1eyfxgrf" path="res://addons/spawner/demo/assets/spawner.png" id="1_k06oy"]
-[ext_resource type="Script" uid="uid://chp5fbifa7aq2" path="res://addons/spawner/spawner_container.gd" id="2_0rilr"]
-[ext_resource type="Script" uid="uid://cplfxhvk0iugl" path="res://addons/spawner/multiple_spawner.gd" id="3_ticih"]
-[ext_resource type="Script" uid="uid://db8a8mu80kn7v" path="res://addons/spawner/enemy_spawn_res.gd" id="4_wv8xv"]
+[ext_resource type="Script" uid="uid://chp5fbifa7aq2" path="res://addons/spawner/scripts/spawner_container.gd" id="2_0rilr"]
+[ext_resource type="Script" uid="uid://cplfxhvk0iugl" path="res://addons/spawner/scripts/multiple_spawner.gd" id="3_ticih"]
+[ext_resource type="Script" uid="uid://db8a8mu80kn7v" path="res://addons/spawner/resources/enemy_spawn_res.gd" id="4_wv8xv"]
 [ext_resource type="PackedScene" uid="uid://bmanbpk285aeq" path="res://addons/spawner/demo/scenes/enemies/ghost.tscn" id="5_3fn3r"]
 [ext_resource type="PackedScene" uid="uid://bhubeyl2ian0n" path="res://addons/spawner/demo/scenes/enemies/cyclops.tscn" id="6_c4ajt"]
-[ext_resource type="Script" uid="uid://cyqw11e4vy5om" path="res://addons/spawner/single_spawner.gd" id="7_wrskv"]
+[ext_resource type="Script" uid="uid://cyqw11e4vy5om" path="res://addons/spawner/scripts/single_spawner.gd" id="7_wrskv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_24bh4"]
 resource_local_to_scene = true
