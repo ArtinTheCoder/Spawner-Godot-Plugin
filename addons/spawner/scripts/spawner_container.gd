@@ -1,7 +1,7 @@
 extends Node
 signal start_wave(should_start)
-signal wave_finished
 # TODO
+#signal wave_finished
 #signal specific_enemy_wave_spawned_multi_spawner(enemy)
 
 @export var start_waves_onready : bool = true
@@ -100,9 +100,9 @@ func spawn_enemy(spawner, x_pos, y_pos):
 				#if spawner_data.spawner_count[spawner.name] == enemy_data.max_amount:
 					#specific_enemy_wave_spawned_multi_spawner.emit(enemy_data)
 				current_enemies += 1
-				
-			else:
-				wave_finished.emit()
+			# TODO
+			#else:
+				#wave_finished.emit()
 				
 		elif spawner.spawner_type == "single_spawner":
 			var inst = spawner.enemy_scene.instantiate()
