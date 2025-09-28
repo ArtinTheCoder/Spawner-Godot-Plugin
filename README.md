@@ -1,6 +1,5 @@
 ﻿# Spawner
 
-> This Plugin is in early development, and may have bugs. 
 >Make an issue on github if you want to add anything or report a bug. Lastly, this is the first plugin I made so please don't expect much :)
 
 ## 🔧 Installation Steps
@@ -132,3 +131,4 @@ func multiple_spawner_finished_spawning():
 	print("Multiple enemy spawner finished spawning.")
 
 ```
+
