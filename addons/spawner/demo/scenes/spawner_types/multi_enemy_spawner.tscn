@@ -57,6 +57,7 @@ max_active_enemies = 3
 [node name="MultipleSpawner" type="Marker2D" parent="SpawnerContainer" node_paths=PackedStringArray("area_2d")]
 script = ExtResource("3_c6oe5")
 enemy_scene_array = Array[ExtResource("4_pwak8")]([SubResource("Resource_vjd8l"), SubResource("Resource_4hlpu")])
+use_random_time = true
 use_custom_areas = true
 area_2d = NodePath("../../SpawnZoneCol")
 metadata/_custom_type_script = "uid://cplfxhvk0iugl"

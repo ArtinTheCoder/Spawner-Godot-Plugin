@@ -91,7 +91,7 @@ func spawn_enemy(spawner, x_pos, y_pos):
 				var inst = enemy_data.scene.instantiate()
 				spawner.add_child(inst)
 				all_active_enemies.append(inst)
-				# enemy's "death signal"
+				# enemy's like death signal
 				if inst.has_signal("tree_exiting"):
 					inst.tree_exiting.connect(_on_enemy_died.bind(inst))
 				spawner_data.spawner_count[spawner.name] += 1
