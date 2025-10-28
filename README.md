@@ -1,8 +1,6 @@
 ﻿# Spawner
 
->Make an issue on github if you want to add anything or report a bug. Lastly, this is the first plugin I made so please don't expect much :)
-
-## 🔧 Installation Steps
+>Make an issue on github if you want to add anything or report a bug. Also thanks to micycle8778 for their customizable packed scene [script](https://github.com/micycle8778/customizable-packed-scene/tree/master)
 
 1. **Download the project files.**
 2. Move the `spawner` folder into your `/addons` folder inside your Godot project.

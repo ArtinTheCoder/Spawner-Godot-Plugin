@@ -22,7 +22,7 @@ metadata/_custom_type_script = "uid://c4p3by0i4juqb"
 script = ExtResource("4_pwak8")
 enemy_scene = SubResource("Resource_4hlpu")
 chance = 50
-max_amount = 2
+max_amount = 4
 enemy_size = Vector2(16, 16)
 metadata/_custom_type_script = "uid://db8a8mu80kn7v"
 
@@ -37,7 +37,7 @@ metadata/_custom_type_script = "uid://c4p3by0i4juqb"
 script = ExtResource("4_pwak8")
 enemy_scene = SubResource("Resource_xhh7o")
 chance = 50
-max_amount = 2
+max_amount = 4
 enemy_size = Vector2(16, 16)
 metadata/_custom_type_script = "uid://db8a8mu80kn7v"
 
@@ -65,13 +65,12 @@ texture = ExtResource("1_3un8m")
 [node name="SpawnerContainer" type="Node2D" parent="."]
 script = ExtResource("2_e7tao")
 start_waves_onready = false
-max_active_enemies = 4
+max_active_enemies = 3
 
 [node name="MultipleSpawner" type="Marker2D" parent="SpawnerContainer" node_paths=PackedStringArray("area_2d")]
 script = ExtResource("3_c6oe5")
 enemy_scene_array = Array[ExtResource("4_pwak8")]([SubResource("Resource_x2bfl"), SubResource("Resource_ounlx")])
 use_random_time = true
-max_time = 4
 use_custom_areas = true
 area_2d = NodePath("../../SpawnZoneCol")
 metadata/_custom_type_script = "uid://cplfxhvk0iugl"

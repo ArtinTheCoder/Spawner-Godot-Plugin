@@ -48,6 +48,8 @@ var custom_area_pos = Vector2(0, 0)
 var warning_printed = {}
 
 func _ready():
+	rng.randomize()
+	
 	for data in enemy_scene_array:
 		culminating_spawner_amount += data.max_amount
 		enemy_counts[data.scene.resource_path] = 0
@@ -65,22 +67,21 @@ func choose_enemy():
 	var total_chance = 0
 	for data in available_enemies:
 		total_chance += data.chance
-		
-	var rand_rng_enemy = rng.randi() % available_enemies.size()
-	var rand_value = rng.randi() % total_chance
+	
+	# -1 is there otherwise it would gave a value from 0 to 100 so
+	# there is 101 possible values
+	var rand_value = rng.randi_range(0, total_chance - 1)
 	var cumulative_chance = 0
 	
 	for data in available_enemies:
 		cumulative_chance += data.chance
-		if rand_value < cumulative_chance:
+		if rand_value <= cumulative_chance:
 			enemy_counts[data.scene.resource_path] += 1
 			
 			if use_custom_areas == true and area_2d != null:
 				get_random_pos_2d(data)
 
 			return data
-	
-	rng.randomize()
 	
 	return null
 

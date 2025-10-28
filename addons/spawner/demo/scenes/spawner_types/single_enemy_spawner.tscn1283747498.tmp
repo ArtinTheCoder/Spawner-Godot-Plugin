@@ -1,20 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://plmn76nkfm7k"]
+[gd_scene load_steps=5 format=3 uid="uid://plmn76nkfm7k"]
 
 [ext_resource type="Texture2D" uid="uid://beeu1eyfxgrf" path="res://addons/spawner/demo/assets/spawner.png" id="1_i6byh"]
 [ext_resource type="Script" uid="uid://chp5fbifa7aq2" path="res://addons/spawner/scripts/spawner_container.gd" id="2_qfsni"]
 [ext_resource type="Script" uid="uid://cyqw11e4vy5om" path="res://addons/spawner/scripts/single_spawner.gd" id="3_bstwn"]
-[ext_resource type="PackedScene" uid="uid://bmanbpk285aeq" path="res://addons/spawner/demo/scenes/enemies/ghost.tscn" id="4_24bh4"]
-[ext_resource type="Script" uid="uid://c4p3by0i4juqb" path="res://addons/spawner/cuztomizable_packed_scenes/cuztomizable_packed_scene.gd" id="5_6kd0x"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_24bh4"]
 size = Vector2(138, 76)
-
-[sub_resource type="Resource" id="Resource_6kd0x"]
-script = ExtResource("5_6kd0x")
-scene = ExtResource("4_24bh4")
-speed = 20.0
-change_dir_time = 1.0
-metadata/_custom_type_script = "uid://c4p3by0i4juqb"
 
 [node name="SingleEnemySpawner" type="StaticBody2D"]
 
@@ -42,7 +33,6 @@ max_active_enemies = 4
 
 [node name="Spawner" type="Marker2D" parent="SpawnerContainer" node_paths=PackedStringArray("area_2d")]
 script = ExtResource("3_bstwn")
-enemy_scene = SubResource("Resource_6kd0x")
 enemy_amount_per_spawner = 8
 use_custom_areas = true
 area_2d = NodePath("../../SpawnZoneCol")

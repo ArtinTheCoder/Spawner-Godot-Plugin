@@ -6,7 +6,7 @@ signal amount_enemy_spawned(amount_of_enemies_spawned)
 
 @export_category("Spawner Info")
 
-@export var enemy_scene : PackedScene
+@export var enemy_scene : CustomizablePackedScene
 
 @export var enemy_amount_per_spawner = 3 
 
@@ -21,7 +21,9 @@ signal amount_enemy_spawned(amount_of_enemies_spawned)
 @export var min_time : int = 1
 @export var max_time : int = 5
 
-var time_between_spawn_rng = RandomNumberGenerator.new()
+var actual_enemy_scene : PackedScene
+
+var time_between_spawn_rng = RandomNumberGenerator.new() 
 
 const RANDOM_TIME : Array[StringName] = [&"min_time", &"max_time"]
 
@@ -47,16 +49,20 @@ var custom_area_pos = Vector2(0, 0)
 var warning_printed = {}
 
 func _ready():
+	if enemy_scene == null:
+		print("NO ENEMY SCENE ATTACHED TO THE SPAWNER")
+	else:
+		actual_enemy_scene = enemy_scene.scene
+		
 	var spawner_node = self
 	spawner_node.child_entered_tree.connect(_on_child_entered_tree)
 	
-	if enemy_scene == null:
-		print("NO ENEMY SCENE")
 	
-	get_random_pos_2d(enemy_scene)
+	
+	get_random_pos_2d(actual_enemy_scene)
 
 func _on_child_entered_tree(node):
-	get_random_pos_2d(enemy_scene)
+	get_random_pos_2d(actual_enemy_scene)
 	if use_custom_areas:
 		node.global_position = custom_area_pos
 	
