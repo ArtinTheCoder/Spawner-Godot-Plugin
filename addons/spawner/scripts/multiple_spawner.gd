@@ -4,6 +4,7 @@ extends Marker2D
 
 signal finished_spawning
 signal amount_enemy_spawned(amount_of_enemies_spawned)
+signal enemy_spawned(enemy)
 
 @export_category("Spawner Info")
 
@@ -91,7 +92,8 @@ func _on_child_entered_tree(node):
 		node.global_position = custom_area_pos 
 		
 	amount_spawned += 1 
-		
+	
+	enemy_spawned.emit(node)
 	amount_enemy_spawned.emit(amount_spawned) 
 		
 	if use_random_time == false:

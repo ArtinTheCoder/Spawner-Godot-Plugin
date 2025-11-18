@@ -3,7 +3,8 @@ class_name SingleSpawner
 extends Marker2D
 
 signal finished_spawning
-signal amount_enemy_spawned(amount_of_enemies_spawned)
+signal amount_enemy_spawned(amount_of_enemies_spawned : int)
+signal enemy_spawned(enemy)
 
 @export_category("Spawner Info")
 
@@ -58,8 +59,6 @@ func _ready():
 	var spawner_node = self
 	spawner_node.child_entered_tree.connect(_on_child_entered_tree)
 	
-	
-	
 	get_random_pos_2d(actual_enemy_scene)
 
 func _on_child_entered_tree(node):
@@ -69,6 +68,7 @@ func _on_child_entered_tree(node):
 	
 	amount_spawned += 1
 	
+	enemy_spawned.emit(node)
 	amount_enemy_spawned.emit(amount_spawned)
 	
 	if use_random_time == false:

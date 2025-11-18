@@ -59,9 +59,11 @@ To use a **custom spawn area**:
 4. Then, in the **Spawner**, set that **CollisionShape** as the **spawn area**.
 
 In the **signals**:
-* Receive a signal on how many enemies are spawned.
+* Emits a signal on how many enemies are spawned.
 
-* Receive a signal once that spawner finished spawning.
+* Emits a signal that passes a parameter of the object spawned.
+
+* Emits a signal once that spawner finished spawning.
 
 Here is an example on what the signal connections would look like in your level script:
 
@@ -71,8 +73,12 @@ extends Node2D
 @onready var single_enemy_spawner_node  = $SpawnerContainer/Spawner
 
 func _ready():
+	single_enemy_spawner_node.enemy_spawned.connect(single_spawner_enemy_spawned)
     single_enemy_spawner_node.amount_enemy_spawned.connect(single_spawner_amount_of_enemy_spawned)
 	single_enemy_spawner_node.finished_spawning.connect(single_spawner_finished_spawning)
+
+func single_spawner_enemy_spawned(enemy):
+	print("Enemy name: " + str(enemy.name))
 
 func single_spawner_amount_of_enemy_spawned(amount):
 	print("Single enemy spawner spawned: " + str(amount))
@@ -108,9 +114,11 @@ To use a **custom spawn area**:
 4. Then, in the **Spawner**, set that **CollisionShape** as the **spawn area**.
 
 In the **signals**:
-* Receive a **signal** on **how many enemies are spawned**.
+* Emits a signal on how many enemies are spawned.
 
-* Receive a **signal** once that spawner **finished spawning**.
+* Emits a signal that passes a parameter of the object spawned.
+
+* Emits a signal once that spawner finished spawning.
 
 Here is an example on what the signal connections would look like in your level script:
 ```gdscript
@@ -119,8 +127,12 @@ extends Node2D
 @onready var multi_enemy_spawner_node  = $SpawnerContainer/MultipleSpawner
 
 func _ready():
+	multi_enemy_spawner_node.enemy_spawned.connect(multiple_spawner_enemy_spawned)
     multi_enemy_spawner_node.amount_enemy_spawned.connect(multiple_spawner_amount_enemy_spawned)
 	multi_enemy_spawner_node.finished_spawning.connect(multiple_spawner_finished_spawning)
+
+func multiple_spawner_enemy_spawned(enemy):
+	print("Enemy name: " + str(enemy.name))
 
 func multiple_spawner_amount_enemy_spawned(amount):
 	print("Multiple enemy spawner spawned: " + str(amount))

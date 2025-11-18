@@ -26,12 +26,13 @@ func _ready():
 	single_enemy_spawner_node = single_enemy_spawner.get_node("SpawnerContainer/Spawner")
 	single_enemy_spawner_node.amount_enemy_spawned.connect(single_spawner_amount_of_enemy_spawned)
 	single_enemy_spawner_node.finished_spawning.connect(single_spawner_finished_spawning)
+	single_enemy_spawner_node.enemy_spawned.connect(single_spawner_enemy_spawned)
 	
 	# Multi enemy spawner NODE
 	multi_enemy_spawner_node = multi_enemy_spawner.get_node("SpawnerContainer/MultipleSpawner")
 	multi_enemy_spawner_node.amount_enemy_spawned.connect(multiple_spawner_amount_enemy_spawned)
 	multi_enemy_spawner_node.finished_spawning.connect(multiple_spawner_finished_spawning)
-	
+	multi_enemy_spawner_node.enemy_spawned.connect(multiple_spawner_enemy_spawned)
 	# enemy spawner types CONTAINER NODE
 	single_enemy_spawner_container_node = single_enemy_spawner.get_node("SpawnerContainer")
 	multi_enemy_spawner_container_node = multi_enemy_spawner.get_node("SpawnerContainer")
@@ -42,19 +43,25 @@ func _ready():
 	
 	# This for the switching camera button not related to plugin
 	cameras = [$Cameras/SingleEnemySpawnerCamera, $Cameras/MultiEnemySpawnerCamera, $Cameras/CombinedEnemySpawnerCamera]
+
+func single_spawner_enemy_spawned(enemy):
+	print("Enemy name: " + str(enemy.name))
 	
 func single_spawner_amount_of_enemy_spawned(amount):
 	print("Single enemy spawner spawned: " + str(amount))
 
 func single_spawner_finished_spawning():
 	print("Single enemy spawner finished spawning.")
+
+func multiple_spawner_enemy_spawned(enemy):
+	print("Enemy name: " + str(enemy.name))
 	
 func multiple_spawner_amount_enemy_spawned(amount):
 	print("Multiple enemy spawner spawned: " + str(amount))
 
 func multiple_spawner_finished_spawning():
 	print("Multiple enemy spawner finished spawning.")
-	
+
 func _on_start_single_pressed():
 	single_enemy_spawner_container_node.start_wave.emit(true)
 
