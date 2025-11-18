@@ -1,4 +1,6 @@
+class_name SpawnerContainer
 extends Node
+
 signal start_wave(should_start)
 # TODO
 #signal wave_finished

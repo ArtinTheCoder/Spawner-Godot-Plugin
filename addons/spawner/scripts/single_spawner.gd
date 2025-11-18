@@ -1,4 +1,5 @@
 @tool
+class_name SingleSpawner
 extends Marker2D
 
 signal finished_spawning

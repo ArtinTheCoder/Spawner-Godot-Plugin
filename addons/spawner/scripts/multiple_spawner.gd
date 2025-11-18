@@ -1,10 +1,11 @@
 @tool
+class_name MultipleSpawner
 extends Marker2D
 
 signal finished_spawning
 signal amount_enemy_spawned(amount_of_enemies_spawned)
 
-@export_category("Spawner Infio")
+@export_category("Spawner Info")
 
 @export var enemy_scene_array : Array[EnemyResource]
 
