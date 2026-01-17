@@ -2,12 +2,16 @@ class_name SpawnerContainer
 extends Node
 
 signal start_wave(should_start)
+signal restart_wave(should_restart)
+
 # TODO
 #signal wave_finished
 #signal specific_enemy_wave_spawned_multi_spawner(enemy)
 
 @export var start_waves_onready : bool = true
 @export var max_active_enemies : int = 10  # Maximum number of active enemies before pausing
+
+@export var restart_spawning_enemies : bool = false
 
 var spawners = []
 var total_enemies = 0
@@ -24,9 +28,43 @@ func _ready():
 	start_spawning = start_waves_onready
 	get_spawners()
 	start_wave.connect(_on_start_wave)
-
+	restart_wave.connect(_on_restart_wave)
+	
 func _on_start_wave(should_start):
 	start_spawning = should_start
+	
+func _on_restart_wave(should_restart) -> void:
+	restart_spawning_enemies = should_restart
+
+func reset_wave() -> void: # Thank you Rick for the reset wave code (@dblhack) on github
+	if restart_spawning_enemies == false:
+		return
+	if not start_spawning:
+		return
+
+	# Can only restart if all enemies have been killed
+	if all_active_enemies.size() > 0:
+		return
+
+	var spawners_processed = 0
+	var starting_index = current_spawner_index
+
+	while spawners_processed < spawners.size() and spawners_processed < spawners_per_frame:
+		var spawner = spawners[current_spawner_index]
+
+		if spawner:
+			var name = spawner.name
+
+			if spawner_data:
+				if spawner_data.spawner_status.has(name):
+					spawner_data.spawner_count[name] = 0
+
+		current_spawner_index = (current_spawner_index + 1) % spawners.size()
+		spawners_processed += 1
+
+		# Stop if we've gone full circle back to starting point
+		if current_spawner_index == starting_index and spawners_processed > 0:
+			break
 
 func get_spawners():
 	for spawner in get_children(true):
@@ -35,7 +73,7 @@ func get_spawners():
 			total_enemies += spawner.culminating_spawner_amount
 		elif spawner.spawner_type == "single_spawner":
 			total_enemies += spawner.enemy_amount_per_spawner
-
+		
 func _physics_process(delta):
 	if not start_spawning:
 		return
@@ -118,4 +156,8 @@ func spawn_enemy(spawner, x_pos, y_pos):
 func _on_enemy_died(enemy):
 	if enemy in all_active_enemies:
 		all_active_enemies.erase(enemy)
+		
 	current_enemies = max(current_enemies - 1, 0)
+	
+	if current_enemies == 0:
+		reset_wave()
