@@ -73,7 +73,5 @@ enemy_scene_array = Array[ExtResource("4_pwak8")]([SubResource("Resource_x2bfl")
 use_random_time = true
 max_time = 4
 use_custom_areas = true
-grid_columns = null
-grid_spacing = null
 area_2d = NodePath("../../SpawnZoneCol")
 metadata/_custom_type_script = "uid://cplfxhvk0iugl"
