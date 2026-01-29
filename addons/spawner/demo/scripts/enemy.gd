@@ -14,13 +14,11 @@ func _physics_process(delta):
 	time_left -= delta
 	if time_left <= 0:
 		_pick_new_direction()
-		
-	# Move and slide handles wall collisions automatically
-	velocity = move_dir * speed
+	
+		velocity = move_dir * speed
 	move_and_slide()
 
 func _pick_new_direction():
-	# Random normalized vector
 	move_dir = Vector2(randf() * 2 - 1, randf() * 2 - 1).normalized()
 	time_left = change_dir_time + randf() * 0.5 # add some randomness
 

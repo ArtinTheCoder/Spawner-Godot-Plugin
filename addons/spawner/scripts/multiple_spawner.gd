@@ -31,6 +31,17 @@ const RANDOM_TIME : Array[StringName] = [&"min_time", &"max_time"]
 	set(value):
 		use_custom_areas = value
 		property_list_changed.emit()
+
+@export_group("Spawn Mode")
+@export_enum("Random", "Grid") var spawn_mode : int = 0:
+	set(value):
+		spawn_mode = value
+		property_list_changed.emit()
+
+@export var grid_columns : int = 3
+@export var grid_spacing : Vector2 = Vector2(50, 50)
+
+const GRID_OPTIONS : Array[StringName] = [&"grid_columns", &"grid_spacing"]
 		
 @export_group("2D")
 @export var area_2d : CollisionShape2D
@@ -46,6 +57,8 @@ var culminating_spawner_amount = 0
 var enemy_counts = {}
 var amount_spawned = 0
 var custom_area_pos = Vector2(0, 0)
+var grid_positions : Array[Vector2] = []
+var current_grid_index = 0
 
 var warning_printed = {}
 
@@ -55,10 +68,62 @@ func _ready():
 	for data in enemy_scene_array:
 		culminating_spawner_amount += data.max_amount
 		enemy_counts[data.scene.resource_path] = 0
+		
 		if data.chance > 100:
 			print("THE TOTAL AMOUNT OF CHANCE IS OVER 100!", "SPAWNER NAME:", self.name)
 	
+	if spawn_mode == 1:  
+		calculate_grid_positions()
+	
 	self.child_entered_tree.connect(_on_child_entered_tree)
+
+func calculate_grid_positions():
+	grid_positions.clear()
+	
+	if use_custom_areas and area_2d != null:
+		var shape = area_2d.get_shape()
+		if shape is RectangleShape2D:
+			var top_left_corner = area_2d.global_position - (area_2d.shape.size / 2)
+			
+			var rows = ceili(float(culminating_spawner_amount) / float(grid_columns))
+			
+			# calculate total grid size
+			var total_width = (grid_columns - 1) * grid_spacing.x
+			var total_height = (rows - 1) * grid_spacing.y
+			
+			# center the grid in the spawn area
+			var start_x = top_left_corner.x + (area_2d.shape.size.x - total_width) / 2
+			var start_y = top_left_corner.y + (area_2d.shape.size.y - total_height) / 2
+			
+			for i in range(culminating_spawner_amount):
+				var row = i / grid_columns
+				var col = i % grid_columns
+				
+				var pos = Vector2(
+					start_x + col * grid_spacing.x,
+					start_y + row * grid_spacing.y
+				)
+				
+				grid_positions.append(pos)
+	else:
+		# grid based on spawner position
+		var rows = ceili(float(culminating_spawner_amount) / float(grid_columns))
+		
+		var total_width = (grid_columns - 1) * grid_spacing.x
+		var total_height = (rows - 1) * grid_spacing.y
+		
+		var start_x = global_position.x - total_width / 2
+		var start_y = global_position.y - total_height / 2
+		
+		for i in range(culminating_spawner_amount):
+			var row = i / grid_columns
+			var col = i % grid_columns
+			
+			var pos = Vector2(
+				start_x + col * grid_spacing.x,
+				start_y + row * grid_spacing.y
+			)
+			grid_positions.append(pos)
 	
 func choose_enemy():
 	var available_enemies = enemy_scene_array.filter(func(data): return enemy_counts[data.scene.resource_path] < data.max_amount)
@@ -80,7 +145,7 @@ func choose_enemy():
 		if rand_value <= cumulative_chance:
 			enemy_counts[data.scene.resource_path] += 1
 			
-			if use_custom_areas == true and area_2d != null:
+			if spawn_mode == 0 and use_custom_areas == true and area_2d != null:
 				get_random_pos_2d(data)
 
 			return data
@@ -88,8 +153,14 @@ func choose_enemy():
 	return null
 
 func _on_child_entered_tree(node): 
-	if use_custom_areas: 
-		node.global_position = custom_area_pos 
+	if spawn_mode == 1:  
+		if current_grid_index < grid_positions.size():
+			node.global_position = grid_positions[current_grid_index]
+			current_grid_index += 1
+			
+	else:  
+		if use_custom_areas: 
+			node.global_position = custom_area_pos 
 		
 	amount_spawned += 1 
 	
@@ -130,6 +201,12 @@ func _validate_property(property : Dictionary) -> void:
 	
 	if property.name == "time_between_spawns" and use_random_time:
 		property.usage = PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_READ_ONLY
+	
+	if property.name in GRID_OPTIONS:
+		if spawn_mode == 1:  
+			property.usage |= PROPERTY_USAGE_EDITOR
+		else:
+			property.usage &= ~PROPERTY_USAGE_EDITOR
 
 func get_random_pos_2d(enemy: EnemyResource):
 	if area_2d != null:
