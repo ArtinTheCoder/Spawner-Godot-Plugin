@@ -1,3 +1,4 @@
+class_name WaveManager
 extends Node
 
 signal wave_started(index: int)
@@ -23,6 +24,7 @@ func start_wave(index: int):
 	containers_finished = 0
 	var wave = waves[index]
 	
+	print("NEW WAVE INFO")
 	print(wave.wave_name)
 	print(wave.time_between_waves)
 	print(wave.max_active_enemies_override)
