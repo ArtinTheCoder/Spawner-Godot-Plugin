@@ -5,7 +5,7 @@ signal start_wave(should_start)
 signal restart_wave(should_restart)
 
 # TODO
-#signal wave_finished
+signal wave_finished
 #signal specific_enemy_wave_spawned_multi_spawner(enemy)
 
 @export var start_waves_onready : bool = true
@@ -25,6 +25,7 @@ var current_spawner_index = 0  # Round-robin spawner selection
 var spawners_per_frame = 1  # How many spawners can spawn per frame
 
 func _ready():
+	add_to_group("spawner_containers")
 	start_spawning = start_waves_onready
 	get_spawners()
 	start_wave.connect(_on_start_wave)
@@ -160,4 +161,13 @@ func _on_enemy_died(enemy):
 	current_enemies = max(current_enemies - 1, 0)
 	
 	if current_enemies == 0:
+		wave_finished.emit()
 		reset_wave()
+
+func reset_spawners():
+	spawner_data.spawner_status.clear()
+	spawner_data.spawner_count.clear()
+	current_enemies = 0
+	all_active_enemies.clear()
+	current_spawner_index = 0
+	

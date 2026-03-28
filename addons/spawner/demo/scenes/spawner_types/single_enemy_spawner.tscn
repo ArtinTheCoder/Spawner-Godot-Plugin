@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://plmn76nkfm7k"]
+[gd_scene format=3 uid="uid://plmn76nkfm7k"]
 
 [ext_resource type="Texture2D" uid="uid://beeu1eyfxgrf" path="res://addons/spawner/demo/assets/spawner.png" id="1_i6byh"]
 [ext_resource type="Script" uid="uid://chp5fbifa7aq2" path="res://addons/spawner/scripts/spawner_container.gd" id="2_qfsni"]
@@ -16,31 +16,32 @@ speed = 20.0
 change_dir_time = 1.0
 metadata/_custom_type_script = "uid://c4p3by0i4juqb"
 
-[node name="SingleEnemySpawner" type="StaticBody2D"]
+[node name="SingleEnemySpawner" type="StaticBody2D" unique_id=1769559274]
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=572291462]
 scale = Vector2(0.45, 0.45)
 polygon = PackedVector2Array(-35, 21, -35, -21, 0, -39, 35, -21, 35, 21, 0, 39)
 
-[node name="SpawnZoneCol" type="CollisionShape2D" parent="."]
+[node name="SpawnZoneCol" type="CollisionShape2D" parent="." unique_id=1680572460]
 position = Vector2(104, 0)
 shape = SubResource("RectangleShape2D_24bh4")
 disabled = true
 
-[node name="Outline" type="Sprite2D" parent="."]
+[node name="Outline" type="Sprite2D" parent="." unique_id=830630765]
 modulate = Color(0, 0, 0, 1)
 scale = Vector2(0.12, 0.12)
 texture = ExtResource("1_i6byh")
 
-[node name="SpawnerImg" type="Sprite2D" parent="."]
+[node name="SpawnerImg" type="Sprite2D" parent="." unique_id=207333526]
 scale = Vector2(0.115, 0.115)
 texture = ExtResource("1_i6byh")
 
-[node name="SpawnerContainer" type="Node2D" parent="."]
+[node name="SpawnerContainer" type="Node2D" parent="." unique_id=449458198]
 script = ExtResource("2_qfsni")
+start_waves_onready = false
 max_active_enemies = 4
 
-[node name="Spawner" type="Marker2D" parent="SpawnerContainer" node_paths=PackedStringArray("area_2d")]
+[node name="Spawner" type="Marker2D" parent="SpawnerContainer" unique_id=721594801 node_paths=PackedStringArray("area_2d")]
 script = ExtResource("3_bstwn")
 enemy_scene = SubResource("Resource_6kd0x")
 enemy_amount_per_spawner = 8
