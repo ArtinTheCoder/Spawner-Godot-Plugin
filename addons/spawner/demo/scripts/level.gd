@@ -92,9 +92,13 @@ func _on_wave_manager_wave_completed(index: int) -> void:
 func _on_wave_manager_wave_started(index: int) -> void:
 	print("Wave started: ", index)
 
+func _on_wave_manager_between_waves_countdown(time_left: float) -> void:
+	print("Wave manager time left to start next wave: ", time_left)
+
 # This for the switching camera button not related to plugin
 func _on_next_cam_pressed() -> void:
 	current_camera = (current_camera + 1) % cameras.size()
 	for i in cameras.size():
 		cameras[i].enabled = (i == current_camera)
+		
 		

@@ -663,6 +663,7 @@ theme_override_font_sizes/font_size = 24
 text = "Next Spawner"
 
 [connection signal="all_waves_completed" from="WaveManager" to="." method="_on_wave_manager_all_waves_completed"]
+[connection signal="between_waves_countdown" from="WaveManager" to="." method="_on_wave_manager_between_waves_countdown"]
 [connection signal="wave_completed" from="WaveManager" to="." method="_on_wave_manager_wave_completed"]
 [connection signal="wave_started" from="WaveManager" to="." method="_on_wave_manager_wave_started"]
 [connection signal="pressed" from="SingleSpawnerInfo/StartSingleEnemy" to="." method="_on_start_single_pressed"]

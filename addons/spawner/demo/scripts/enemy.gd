@@ -23,6 +23,8 @@ func _pick_new_direction():
 	time_left = change_dir_time + randf() * 0.5 # add some randomness
 
 func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
+	Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			queue_free()
+			Input.set_default_cursor_shape(Input.CURSOR_ARROW)

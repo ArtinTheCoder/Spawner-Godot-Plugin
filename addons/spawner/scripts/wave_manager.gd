@@ -3,6 +3,7 @@ extends Node
 signal wave_started(index: int)
 signal wave_completed(index: int)
 signal all_waves_completed()
+signal between_waves_countdown(time_left: float) # for UIs
 
 @export var waves: Array[WaveResource]
 @export var auto_start: bool = false
@@ -52,6 +53,12 @@ func _advance_wave():
 	var next_wave = waves[current_wave_index]
 	var wait_time = next_wave.time_between_waves if next_wave.time_between_waves > 0 else time_between_waves
 	
-	await get_tree().create_timer(wait_time).timeout
+	var time_left = wait_time
+	while time_left > 0:
+		var rounded_time_left = snapped(time_left, 0.1)
+		between_waves_countdown.emit(rounded_time_left)
+		await get_tree().create_timer(0.1).timeout
+		time_left -= 0.1
+		
 	start_wave(current_wave_index)
 	
