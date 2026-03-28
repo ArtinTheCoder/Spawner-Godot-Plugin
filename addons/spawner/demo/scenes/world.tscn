@@ -320,13 +320,21 @@ texture = ExtResource("1_0ggv2")
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_qmadg")
 
-[sub_resource type="Resource" id="Resource_wd6xy"]
-script = ExtResource("4_fl2ki")
-wave_name = "Test"
-metadata/_custom_type_script = "uid://553bncr723n0"
-
 [sub_resource type="Resource" id="Resource_fl2ki"]
 script = ExtResource("4_fl2ki")
+wave_name = "Wave 1"
+metadata/_custom_type_script = "uid://553bncr723n0"
+
+[sub_resource type="Resource" id="Resource_wd6xy"]
+script = ExtResource("4_fl2ki")
+wave_name = "Wave 2"
+time_between_waves = 5.0
+metadata/_custom_type_script = "uid://553bncr723n0"
+
+[sub_resource type="Resource" id="Resource_4pytf"]
+script = ExtResource("4_fl2ki")
+wave_name = "Wave 3"
+max_active_enemies_override = 2
 metadata/_custom_type_script = "uid://553bncr723n0"
 
 [node name="World" type="Node2D" unique_id=1400519623]
@@ -351,7 +359,7 @@ tile_set = SubResource("TileSet_3sbnv")
 
 [node name="WaveManager" type="Node2D" parent="." unique_id=1162574092]
 script = ExtResource("3_vdqq4")
-waves = Array[ExtResource("4_fl2ki")]([SubResource("Resource_wd6xy"), SubResource("Resource_fl2ki")])
+waves = Array[ExtResource("4_fl2ki")]([SubResource("Resource_fl2ki"), SubResource("Resource_wd6xy"), SubResource("Resource_4pytf")])
 auto_start = true
 metadata/_custom_type_script = "uid://ssim1dkyyeb6"
 
@@ -654,6 +662,9 @@ theme_override_fonts/font = ExtResource("4_y6coj")
 theme_override_font_sizes/font_size = 24
 text = "Next Spawner"
 
+[connection signal="all_waves_completed" from="WaveManager" to="." method="_on_wave_manager_all_waves_completed"]
+[connection signal="wave_completed" from="WaveManager" to="." method="_on_wave_manager_wave_completed"]
+[connection signal="wave_started" from="WaveManager" to="." method="_on_wave_manager_wave_started"]
 [connection signal="pressed" from="SingleSpawnerInfo/StartSingleEnemy" to="." method="_on_start_single_pressed"]
 [connection signal="pressed" from="SingleSpawnerInfo/StopSingleEnemy" to="." method="_on_stop_single_pressed"]
 [connection signal="pressed" from="MultiSpawnerInfo/StartMultiEnemy" to="." method="_on_start_multi_enemy_pressed"]

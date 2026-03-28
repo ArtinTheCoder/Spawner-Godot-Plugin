@@ -169,7 +169,6 @@ func _on_enemy_died(enemy):
 
 # The wave manager calls this func
 func reset_spawners():
-	print("reset spawner called")
 	is_active = false
 	spawner_data.spawner_status.clear()
 	spawner_data.spawner_count.clear()

@@ -44,7 +44,7 @@ max_active_enemies = 4
 [node name="Spawner" type="Marker2D" parent="SpawnerContainer" unique_id=721594801 node_paths=PackedStringArray("area_2d")]
 script = ExtResource("3_bstwn")
 enemy_scene = SubResource("Resource_6kd0x")
-enemy_amount_per_spawner = 4
+enemy_amount_per_spawner = 8
 use_custom_areas = true
 area_2d = NodePath("../../SpawnZoneCol")
 enemy_size = Vector2(16, 16)

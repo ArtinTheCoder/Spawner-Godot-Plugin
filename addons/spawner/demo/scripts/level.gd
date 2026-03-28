@@ -36,7 +36,6 @@ func _ready():
 	
 	# enemy spawner types CONTAINER NODE
 	single_enemy_spawner_container_node = single_enemy_spawner.get_node("SpawnerContainer")
-	single_enemy_spawner_container_node.wave_finished.connect(test)
 	
 	multi_enemy_spawner_container_node = multi_enemy_spawner.get_node("SpawnerContainer")
 	combined_enemy_spawner_container_node = combined_enemy_spawner.get_node("SpawnerContainer")
@@ -47,32 +46,24 @@ func _ready():
 	# This for the switching camera button not related to plugin
 	cameras = [$Cameras/SingleEnemySpawnerCamera, $Cameras/MultiEnemySpawnerCamera, $Cameras/CombinedEnemySpawnerCamera]
 
-func test():
-	print("Spawner container finished spawning")
 		
 func single_spawner_enemy_spawned(enemy):
-	#print("Enemy name: " + str(enemy.name))
-	pass
+	print("Enemy name: " + str(enemy.name))
 	
 func single_spawner_amount_of_enemy_spawned(amount):
-	#print("Single enemy spawner spawned: " + str(amount))
-	pass
+	print("Single enemy spawner spawned: " + str(amount))
 	
 func single_spawner_finished_spawning():
-	#print("Single enemy spawner finished spawning.")
-	pass
+	print("Single enemy spawner finished spawning.")
 	
 func multiple_spawner_enemy_spawned(enemy):
-	#print("Enemy name: " + str(enemy.name))
-	pass
+	print("Enemy name: " + str(enemy.name))
 	
 func multiple_spawner_amount_enemy_spawned(amount):
-	#print("Multiple enemy spawner spawned: " + str(amount))
-	pass
+	print("Multiple enemy spawner spawned: " + str(amount))
 	
 func multiple_spawner_finished_spawning():
-	#print("Multiple enemy spawner finished spawning.")
-	pass
+	print("Multiple enemy spawner finished spawning.")
 
 func _on_start_single_pressed():
 	single_enemy_spawner_container_node.start_wave.emit(true)
@@ -92,8 +83,18 @@ func _on_start_combined_enemy_pressed() -> void:
 func _on_stop_combined_enemy_pressed() -> void:
 	combined_enemy_spawner_container_node.start_wave.emit(false)
 
+func _on_wave_manager_all_waves_completed() -> void:
+	print("ALL WAVES COMPLETED")
+
+func _on_wave_manager_wave_completed(index: int) -> void:
+	print("Wave completed: ", index)
+
+func _on_wave_manager_wave_started(index: int) -> void:
+	print("Wave started: ", index)
+
 # This for the switching camera button not related to plugin
 func _on_next_cam_pressed() -> void:
 	current_camera = (current_camera + 1) % cameras.size()
 	for i in cameras.size():
 		cameras[i].enabled = (i == current_camera)
+		
