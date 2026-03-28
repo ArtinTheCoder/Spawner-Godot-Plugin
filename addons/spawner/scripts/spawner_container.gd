@@ -167,6 +167,7 @@ func _on_enemy_died(enemy):
 		wave_finished.emit()
 		reset_wave()
 
+# The wave manager calls this func
 func reset_spawners():
 	print("reset spawner called")
 	is_active = false
@@ -178,4 +179,8 @@ func reset_spawners():
 	
 	for spawner in spawners:
 		spawner.amount_spawned = 0
+		if spawner.spawner_type == "multiple_spawner":
+			spawner.current_grid_index = 0
+			for data in spawner.enemy_scene_array:
+				spawner.enemy_counts[data.scene.resource_path] = 0
 	
