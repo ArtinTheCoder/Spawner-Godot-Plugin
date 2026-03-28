@@ -23,6 +23,7 @@ func start_wave(index: int):
 	containers_finished = 0
 	
 	for container in spawner_containers:
+		container.reset_spawners()
 		container.wave_finished.connect(_on_container_finished, CONNECT_ONE_SHOT)
 		container.start_wave.emit(true)
 	

@@ -49,23 +49,30 @@ func _ready():
 
 func test():
 	print("Spawner container finished spawning")
+		
 func single_spawner_enemy_spawned(enemy):
-	print("Enemy name: " + str(enemy.name))
+	#print("Enemy name: " + str(enemy.name))
+	pass
 	
 func single_spawner_amount_of_enemy_spawned(amount):
-	print("Single enemy spawner spawned: " + str(amount))
-
+	#print("Single enemy spawner spawned: " + str(amount))
+	pass
+	
 func single_spawner_finished_spawning():
-	print("Single enemy spawner finished spawning.")
-
+	#print("Single enemy spawner finished spawning.")
+	pass
+	
 func multiple_spawner_enemy_spawned(enemy):
-	print("Enemy name: " + str(enemy.name))
+	#print("Enemy name: " + str(enemy.name))
+	pass
 	
 func multiple_spawner_amount_enemy_spawned(amount):
-	print("Multiple enemy spawner spawned: " + str(amount))
-
+	#print("Multiple enemy spawner spawned: " + str(amount))
+	pass
+	
 func multiple_spawner_finished_spawning():
-	print("Multiple enemy spawner finished spawning.")
+	#print("Multiple enemy spawner finished spawning.")
+	pass
 
 func _on_start_single_pressed():
 	single_enemy_spawner_container_node.start_wave.emit(true)

@@ -325,6 +325,10 @@ script = ExtResource("4_fl2ki")
 wave_name = "Test"
 metadata/_custom_type_script = "uid://553bncr723n0"
 
+[sub_resource type="Resource" id="Resource_fl2ki"]
+script = ExtResource("4_fl2ki")
+metadata/_custom_type_script = "uid://553bncr723n0"
+
 [node name="World" type="Node2D" unique_id=1400519623]
 script = ExtResource("1_ggmd7")
 
@@ -347,7 +351,7 @@ tile_set = SubResource("TileSet_3sbnv")
 
 [node name="WaveManager" type="Node2D" parent="." unique_id=1162574092]
 script = ExtResource("3_vdqq4")
-waves = Array[ExtResource("4_fl2ki")]([SubResource("Resource_wd6xy")])
+waves = Array[ExtResource("4_fl2ki")]([SubResource("Resource_wd6xy"), SubResource("Resource_fl2ki")])
 auto_start = true
 metadata/_custom_type_script = "uid://ssim1dkyyeb6"
 
