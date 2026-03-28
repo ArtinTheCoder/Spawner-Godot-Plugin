@@ -7,7 +7,7 @@
 3. Enable the **addon** through the project settings, and start spawning endless amount of enemies with **ease!**
 
 ## Key Features
-There are **multiple new nodes** with this addon! The following are [Spawner Container](#spawner-container), [Spawner](#spawner-1), and 
+There are **multiple new nodes** with this addon! The following are [Spawner Container](#spawner-container), [Wave Manager](#wave-manager), [Spawner](#spawner-1), and 
 [Multiple Spawner](#multiple-spawner).
 
 # Videos
@@ -37,6 +37,47 @@ func _on_start_single_pressed():
 
 func _on_stop_single_pressed():
     single_enemy_spawner_container_node.start_wave.emit(false)
+```
+
+# Wave Manager
+The **Wave Manager** handles spawning waves of enemiess across **multiple Spawner Containers** automatically.
+
+Place the **Wave Manager** as a node in your **level scene**, that your Spawner Container nodes are in.
+
+In the **Inspector** you can:
+* Add **Wave Resources** to the waves array, one per wave.
+* **Auto Start** the waves as soon as the game loads in the _ready()
+* Set the **time between waves** in seconds.
+
+In the **signals**:
+* Emits a signal when a **wave starts**, with the wave index (starts at 0).
+* Emits a signal when a **wave is completed**, with the wave index (starts at 0).
+* Emits a signal with the **time remaining** before the next wave starts.
+* Emits a signal once **all waves are completed** (How many waves you set in the inspector with the wave resources).
+
+Here is an example on what the signal connections would look like in your level script:
+```gdscript
+extends Node2D
+
+@onready var wave_manager : WaveManager = $WaveManager
+
+func _ready():
+    wave_manager.wave_started.connect(_on_wave_started)
+    wave_manager.wave_completed.connect(_on_wave_completed)
+    wave_manager.between_waves_countdown.connect(_on_countdown)
+    wave_manager.all_waves_completed.connect(_on_all_waves_completed)
+
+func _on_wave_started(index):
+    print("Wave started: " + str(index))
+
+func _on_wave_completed(index):
+    print("Wave completed: " + str(index))
+
+func _on_countdown(time_left):
+    print("Next wave in: " + str(time_left))
+
+func _on_all_waves_completed():
+    print("All waves completed!")
 ```
 
 # Spawner

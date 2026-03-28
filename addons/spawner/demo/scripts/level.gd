@@ -33,8 +33,10 @@ func _ready():
 	multi_enemy_spawner_node.amount_enemy_spawned.connect(multiple_spawner_amount_enemy_spawned)
 	multi_enemy_spawner_node.finished_spawning.connect(multiple_spawner_finished_spawning)
 	multi_enemy_spawner_node.enemy_spawned.connect(multiple_spawner_enemy_spawned)
+	
 	# enemy spawner types CONTAINER NODE
 	single_enemy_spawner_container_node = single_enemy_spawner.get_node("SpawnerContainer")
+	
 	multi_enemy_spawner_container_node = multi_enemy_spawner.get_node("SpawnerContainer")
 	combined_enemy_spawner_container_node = combined_enemy_spawner.get_node("SpawnerContainer")
 	
@@ -44,21 +46,22 @@ func _ready():
 	# This for the switching camera button not related to plugin
 	cameras = [$Cameras/SingleEnemySpawnerCamera, $Cameras/MultiEnemySpawnerCamera, $Cameras/CombinedEnemySpawnerCamera]
 
+		
 func single_spawner_enemy_spawned(enemy):
 	print("Enemy name: " + str(enemy.name))
 	
 func single_spawner_amount_of_enemy_spawned(amount):
 	print("Single enemy spawner spawned: " + str(amount))
-
+	
 func single_spawner_finished_spawning():
 	print("Single enemy spawner finished spawning.")
-
+	
 func multiple_spawner_enemy_spawned(enemy):
 	print("Enemy name: " + str(enemy.name))
 	
 func multiple_spawner_amount_enemy_spawned(amount):
 	print("Multiple enemy spawner spawned: " + str(amount))
-
+	
 func multiple_spawner_finished_spawning():
 	print("Multiple enemy spawner finished spawning.")
 
@@ -80,8 +83,22 @@ func _on_start_combined_enemy_pressed() -> void:
 func _on_stop_combined_enemy_pressed() -> void:
 	combined_enemy_spawner_container_node.start_wave.emit(false)
 
+func _on_wave_manager_all_waves_completed() -> void:
+	print("ALL WAVES COMPLETED")
+
+func _on_wave_manager_wave_completed(index: int) -> void:
+	print("Wave completed: ", index)
+
+func _on_wave_manager_wave_started(index: int) -> void:
+	print("Wave started: ", index)
+
+func _on_wave_manager_between_waves_countdown(time_left: float) -> void:
+	print("Wave manager time left to start next wave: ", time_left)
+
 # This for the switching camera button not related to plugin
 func _on_next_cam_pressed() -> void:
 	current_camera = (current_camera + 1) % cameras.size()
 	for i in cameras.size():
 		cameras[i].enabled = (i == current_camera)
+		
+		

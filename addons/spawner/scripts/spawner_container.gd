@@ -5,7 +5,7 @@ signal start_wave(should_start)
 signal restart_wave(should_restart)
 
 # TODO
-#signal wave_finished
+signal wave_finished
 #signal specific_enemy_wave_spawned_multi_spawner(enemy)
 
 @export var start_waves_onready : bool = true
@@ -24,13 +24,17 @@ var all_active_enemies = []  # Array to track all active enemies for pausing
 var current_spawner_index = 0  # Round-robin spawner selection
 var spawners_per_frame = 1  # How many spawners can spawn per frame
 
+var is_active = false
+
 func _ready():
+	add_to_group("spawner_containers")
 	start_spawning = start_waves_onready
 	get_spawners()
 	start_wave.connect(_on_start_wave)
 	restart_wave.connect(_on_restart_wave)
 	
 func _on_start_wave(should_start):
+	is_active = should_start
 	start_spawning = should_start
 	
 func _on_restart_wave(should_restart) -> void:
@@ -159,5 +163,23 @@ func _on_enemy_died(enemy):
 		
 	current_enemies = max(current_enemies - 1, 0)
 	
-	if current_enemies == 0:
+	if current_enemies == 0 and is_active:
+		wave_finished.emit()
 		reset_wave()
+
+# The wave manager calls this func
+func reset_spawners():
+	is_active = false
+	spawner_data.spawner_status.clear()
+	spawner_data.spawner_count.clear()
+	current_enemies = 0
+	all_active_enemies.clear()
+	current_spawner_index = 0
+	
+	for spawner in spawners:
+		spawner.amount_spawned = 0
+		if spawner.spawner_type == "multiple_spawner":
+			spawner.current_grid_index = 0
+			for data in spawner.enemy_scene_array:
+				spawner.enemy_counts[data.scene.resource_path] = 0
+	
