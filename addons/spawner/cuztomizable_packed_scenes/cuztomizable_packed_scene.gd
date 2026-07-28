@@ -17,11 +17,18 @@ func _get(property):
 			return overrides[property]
 		elif scene.instantiate().get_script().get_property_default_value(property) != null:
 			return scene.instantiate().get(property)
-
+		else:
+			return null
+	else:
+		return null
+		
 func _set(property, value):
 	if scene != null:
 		overrides[property] = value
-
+		return true
+	
+	return false
+		
 func _get_property_list():
 	if scene != null:
 		return (
